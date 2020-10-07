@@ -73,17 +73,23 @@ source ~/.git-completion.bash
 GIT_PS1_SHOWDIRTYSTATE='true'
 GIT_PS1_SHOWUPSTREAM="auto"
 
-export PS1="\[$IYellow\]\T\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
+#######################################################
+# Custom bash prompt
+#######################################################
+export PS1="\[$Yellow\]\t\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
 
 #######################################################
 # PATH
 #######################################################
 
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
 # This is where you put your hand rolled scripts (remember to chmod them)
-export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/npm-global/bin:$PATH"
-# This is so python/pip commands are available
-export PATH="$HOME/.local/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
+    export PATH="$HOME/npm-global/bin:$PATH"
+    # This is so python/pip commands are available
+    export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in

@@ -71,7 +71,7 @@ unlink:
 	@printf "\\033[32m✓\\033[0m Symlinks removed. Manually remove ~/dotfiles directory if needed.\\n"
 
 
-.PHONY: install nvim node
+.PHONY: install nvim node git
 
 install:
 	@bash ./scripts/install.sh
@@ -81,3 +81,6 @@ nvim:
 
 node:
 	@bash ./scripts/node.sh
+
+git:
+	@bash ./scripts/git.sh
