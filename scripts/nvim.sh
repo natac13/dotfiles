@@ -1,5 +1,11 @@
+#!/bin/bash
+
 # neovim setup
 echo "Setup of neovim"
+
+mkdir -p "$HOME/.local/share/nvim/site/pack/natac/start"
+mkdir -p "$HOME/.local/share/nvim/undo"
+mkdir -p "$HOME/.config/nvim"
 
 if [ -x /usr/bin/nvim ]; then
   export EDITOR=nvim
@@ -11,23 +17,6 @@ fi
 
 COC_EXT_PATH="$HOME/.config/coc/extensions"
 
-if [ ! -d $DOTFILES_DIR ]
-then
-  source ./utils.sh
-fi
-
-mkdir -p ~/.local/share/nvim/site/pack/natac/start
-mkdir -p ~/.local/share/nvim/undo
-mkdir -p ~/.config/nvim
-
-echo "Link dotfile/nvim/* to ~/.config/nvim*..."
-for file in $DOTFILES_DIR/nvim/*
-do
-  target="$HOME/.config/nvim/`basename $file`"
-  [ -e $target ] && rm $target &>/dev/null
-  ln -s $file $target
-done
-success
 
 echo "Clone all vim plugins."
 cd ~/.local/share/nvim/site/pack/natac/start
@@ -48,17 +37,14 @@ git clone --depth 1 --branch release https://github.com/neoclide/coc.nvim.git
 
 
 # Install extensions
-if [[ ! -d $COC_EXT_PATH ]]; then
+if [ ! -d "$COC_EXT_PATH" ]; then
   mkdir -p "$HOME/.config/coc/extensions"
 fi
 cd ~/.config/coc/extensions
-if [ ! -f package.json ]
-then
+if [ ! -f package.json ]; then
   echo '{"dependencies":{}}'> package.json
 fi
 
 flags="--global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod"
 # Change extension names to the extensions you need
 npm install coc-snippets coc-html coc-css coc-tsserver coc-json coc-graphql coc-yaml coc-pairs coc-prettier coc-eslint $flags
-
-cd ~

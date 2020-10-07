@@ -73,7 +73,7 @@ source ~/.git-completion.bash
 GIT_PS1_SHOWDIRTYSTATE='true'
 GIT_PS1_SHOWUPSTREAM="auto"
 
-export PS1="\[$IYellow\]\T\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1 " (%s)")\[$Color_Off\] $"
+export PS1="\[$IYellow\]\T\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
 
 #######################################################
 # PATH

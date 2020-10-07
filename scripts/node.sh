@@ -1,3 +1,5 @@
+#!/bin/bash
+
 read -p "Would you like to install NodeJS? [Y/n]" nodejs
 case $nodejs in
  [Yy]* )

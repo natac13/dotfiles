@@ -1,6 +1,6 @@
 let mapleader = "," 
 set encoding=utf-8
-syntax on
+syntax enable
 
 " Show matching brackets when text indicator is over them
 set showmatch
@@ -25,7 +25,6 @@ set cmdheight=1
 " Theme
 try
   " Set theme & color terminal
-  " set t_Co=256
   " colorscheme gruvbox
   " let g:gruvbox_contrast_dark = 'hard'
   " let g:gruvbox_termcolors = 256
@@ -45,6 +44,7 @@ try
 catch
   colorscheme desert
 endtry
+
 " turn on italics for comments
 highlight Comment cterm=italic gui=italic
 
