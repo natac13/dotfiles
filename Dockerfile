@@ -33,9 +33,9 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
   apt-get -y install nodejs && \
   ln -s /usr/bin/nodejs /usr/local/bin/node
 
-COPY install.sh /home/root/install.sh
+COPY . /home/root/src
 
-WORKDIR  /home/root
+WORKDIR  /home/root/src
 
 # RUN "bash ./install.sh"
 

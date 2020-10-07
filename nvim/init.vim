@@ -25,13 +25,28 @@ set cmdheight=1
 " Theme
 try
   " Set theme & color terminal
-  set t_Co=256
-  colorscheme gruvbox
-  let g:gruvbox_contrast_dark = 'hard'
-  let g:gruvbox_termcolors = 256
+  " set t_Co=256
+  " colorscheme gruvbox
+  " let g:gruvbox_contrast_dark = 'hard'
+  " let g:gruvbox_termcolors = 256
+  " For Neovim 0.1.3 and 0.1.4
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+  " Or if you have Neovim >= 0.1.5
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+
+  " Theme
+  let g:oceanic_next_terminal_bold = 1
+  let g:oceanic_next_terminal_italic = 1
+  colorscheme OceanicNext
+  let g:airline_theme='oceanicnext'
 catch
   colorscheme desert
 endtry
+" turn on italics for comments
+highlight Comment cterm=italic gui=italic
 
 set background=dark
 
@@ -134,7 +149,6 @@ set clipboard+=unnamedplus
 "set clipboard=unnamed
 
 " Ariline (statusbar)
-let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#hunks#enabled=0
 let g:airline#extensions#branch#enabled=1
@@ -243,21 +257,6 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
