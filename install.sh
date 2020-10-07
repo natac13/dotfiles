@@ -107,13 +107,13 @@ mkdir -p ~/.local/share/nvim/site/pack/natac/start
 cd ~/.local/share/nvim/site/pack/natac/start
 git clone https://tpope.io/vim/fugitive.git
 nvim -u NONE -c "helptags fugitive/doc" -c q
-git clone --depth 1 https://github.com/morhetz/gruvbox.git && \
-git clone --depth 1 https://github.com/vim-airline/vim-airline.git && \
-git clone --depth 1 https://github.com/tpope/vim-fugitive.git && \
-git clone --depth 1 https://github.com/tpope/vim-surround && \
-git clone --depth 1 https://github.com/vim-syntastic/syntastic.git && \
-git clone --depth 1 https://github.com/junegunn/fzf.git && \
-git clone --depth 1 https://github.com/airblade/vim-gitgutter.git && \
+git clone --depth 1 https://github.com/morhetz/gruvbox.git 
+git clone --depth 1 https://github.com/vim-airline/vim-airline.git 
+git clone --depth 1 https://github.com/tpope/vim-fugitive.git 
+git clone --depth 1 https://github.com/tpope/vim-surround 
+git clone --depth 1 https://github.com/vim-syntastic/syntastic.git 
+git clone --depth 1 https://github.com/junegunn/fzf.git 
+git clone --depth 1 https://github.com/airblade/vim-gitgutter.git 
 git clone --depth 1 --branch release https://github.com/neoclide/coc.nvim.git
 
 
@@ -124,7 +124,7 @@ if [ ! -f package.json ]
 then
   echo '{"dependencies":{}}'> package.json
 fi
-Change extension names to the extensions you need
+# Change extension names to the extensions you need
 npm install coc-snippets coc-html coc-css coc-tsserver coc-json coc-graphql coc-yaml coc-pairs coc-prettier coc-eslint --only=prod
 
 #nvim -c "call coc#util#install()|echo 'Quit vim using :qa when completed'"
