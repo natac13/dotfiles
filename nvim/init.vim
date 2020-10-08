@@ -1,4 +1,4 @@
-let mapleader = "," 
+let mapleader = "\<space>" 
 set encoding=utf-8
 syntax enable
 
@@ -22,7 +22,9 @@ set magic
 set ruler
 set cmdheight=1
 
-" Theme
+" ===============================================
+"                    THEME
+" ===============================================
 try
   " Set theme & color terminal
   " colorscheme gruvbox
@@ -53,12 +55,16 @@ set background=dark
 " set number of line VIM remembers as history
 set history=500
 
-inoremap jk <ESC>
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Key Remapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inoremap jk <ESC>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -155,7 +161,14 @@ let g:airline#extensions#branch#enabled=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => COC 
+"  FZF
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <C-p> :Files<cr>
+nnoremap <Leader>b :Buffers<cr>
+nnoremap <Leader>s :BLines<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  COC 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc config
 let g:coc_global_extensions = [
@@ -185,7 +198,6 @@ function! s:check_back_space() abort
 endfunction
 
 
-" Use <c-space> to trigger completion.
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
@@ -291,4 +303,14 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 
-nnoremap <space>ed :CocCommand explorer<CR>
+" nnoremap <leader>ed :CocCommand explorer<CR>
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""
+"  Netrw
+"""""""""""""""""""""""""""""""""""""""""""""""""
+let g:netrw_liststyle = 3
+let g:netrw_banner = 1
+let g:netrw_winsize = 30
+nnoremap <leader>e :Vexplor<CR>
