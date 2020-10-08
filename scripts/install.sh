@@ -30,17 +30,18 @@ sudo apt-get install -y \
   vim \
   neovim \
   tmux \
-  # fzf \ Ubuntu 19.10+
-  # ripgrep \ Ubuntu 18.10+
+  # fzf \ # Ubuntu 19.10+
+  # ripgrep \ # Ubuntu 18.10+
   tldr \
   nnn \
   neofetch \
   openssh-client \
   automake \
-  make \
+  build-essentials \
+  # make \ # included with build-essentials
   unzip \
-  g++ \
-  gcc \
+  # g++ \ # included with build-essentials
+  # gcc \ # included with build-essentials
   jq \
   xclip 
 
