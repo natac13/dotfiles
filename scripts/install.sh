@@ -14,7 +14,12 @@ function doing () {
 }
 
 # Get the lastest version of neovim 
+##################################################
+# Update ppa repositories.
+##################################################
 # sudo add-apt-repository -y ppa:neovim-ppa/stable
+# sudo add-apt-repository -y ppa:git-core/ppa
+
 
 cd ~ && sudo apt-get update -y \
   && sudo apt-get upgrade -y;
