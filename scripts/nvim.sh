@@ -31,6 +31,7 @@ nvim -u NONE -c "helptags surround/doc" -c q
 git clone --depth 1 https://github.com/tpope/vim-commentary.git
 nvim -u NONE -c "helptags commentary/doc" -c q
 git clone --depth 1 https://github.com/junegunn/fzf.git 
+git clone --depth 1 https://github.com/junegunn/fzf.vim.git 
 git clone --depth 1 https://github.com/airblade/vim-gitgutter.git
 nvim -u NONE -c "helptags vim-gitgutter/doc" -c q
 git clone --depth 1 --branch release https://github.com/neoclide/coc.nvim.git
