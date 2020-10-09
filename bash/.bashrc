@@ -12,14 +12,14 @@ esac
 shopt -s nullglob 
 
 ##################################################
-# Define Dotfiles repo variable
+# Dotfiles repo variable
 ##################################################
 # if [ -z "$DOTFILES" ]; then
 export DOTFILES="$HOME/projects/dotfiles"
 # fi
 
 ##################################################
-# Load Color variables
+# Color variables
 ##################################################
 if [ -f "${DOTFILES}/bash/colors.sh" ]; then
   source "${DOTFILES}/bash/colors.sh"
@@ -27,7 +27,7 @@ fi
 
 
 ##################################################
-# Load utilities functions
+# Utilities functions
 ##################################################
 LIB="${DOTFILES}/bash/lib/"
 for _bash_lib_file in "$LIB"/*.sh
@@ -36,8 +36,21 @@ do
 done
 
 ##################################################
-# Load Aliases, Completions
+# Aliases, Completions
 ##################################################
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+ if ! shopt -oq posix; then
+   if [ -f /usr/share/bash-completion/bash_completion ]; then
+     . /usr/share/bash-completion/bash_completion
+   elif [ -f /etc/bash_completion ]; then
+     . /etc/bash_completion
+   elif [ -f /etc/profile.d/bash_completion.sh ]; then
+     . /etc/profile.d/bash_completion.sh
+   fi
+ fi
+
 ALIAS_DIR="${DOTFILES}/bash/aliases/"
 for alias_file in "$ALIAS_DIR"/*.sh
 do
@@ -52,6 +65,9 @@ done
 
 shopt -u nullglob
 
+##################################################
+# Bash History
+##################################################
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -63,6 +79,10 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+
+##################################################
+# bashrc defaults
+##################################################
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -107,30 +127,6 @@ else
 fi
 unset color_prompt force_color_prompt
 
-
-source ~/.git-prompt.sh
-source ~/.git-completion.bash
-GIT_PS1_SHOWDIRTYSTATE='true'
-GIT_PS1_SHOWUPSTREAM="auto"
-
-#######################################################
-# Custom bash prompt
-#######################################################
-export PS1="\[$Yellow\]\t\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
-
-#######################################################
-# PATH
-#######################################################
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-# This is where you put your hand rolled scripts (remember to chmod them)
-    export PATH="$HOME/bin:$PATH"
-    export PATH="$HOME/npm-global/bin:$PATH"
-    # This is so python/pip commands are available
-    export PATH="$HOME/.local/bin:$PATH"
-fi
-
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
@@ -152,31 +148,64 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
 
 # tabtab source for packages
 # uninstall by removing these lines
 [ -f ~/.config/tabtab/__tabtab.bash ] && . ~/.config/tabtab/__tabtab.bash || true
 
-# FZF configurations
+#######################################################
+# Custom bash prompt
+#######################################################
+source ~/.git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE='true'
+GIT_PS1_SHOWUPSTREAM="auto"
+# with date
+# CUSTOM_PROMPT="\[$Cyan\]|\d - \A|\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
+# without date
+function makePrompt() {
+  if [ $UID -eq 0 ]; then
+    # root user
+    UC="${BPurple}"
+  else
+    UC="${Green}"
+  fi
+  if [ "$?" -eq "0" ]; then
+    # success / normal prompt
+    CC="${IBlue}"
+  else
+    CC="${BRed}"
+    # last command has failed - error prompt
+  fi
+  CUSTOM_PROMPT="\[$Yellow\][\A]\[$UC\][\u] \[$White\]\w\\n\[$CC\][!\!]\[$ICyan\]\$(__git_ps1)\[$Color_Off\]$ "
+  export PS1=$CUSTOM_PROMPT
+}
+export PROMPT_COMMAND=makePrompt
+
+#######################################################
+# PATH
+#######################################################
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+# This is where you put your hand rolled scripts (remember to chmod them)
+    export PATH="$HOME/bin:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
+    export PATH="$HOME/npm-global/bin:$PATH"
+fi
+
+#######################################################
+# Editor
+#######################################################
+
+if [ -x /usr/bin/nvim ]; then export EDITOR=nvim
+  export VISUAL=nvim
+else
+  export EDITOR=vim
+  export VISUAL=vim
+fi
+
+#######################################################
+# FZF
+#######################################################
 export FZF_DEFAULT_OPTS='--layout=reverse --height 40%'
 export FZF_DEFAULT_COMMAND="rg --smart-case --files --no-ignore --hidden --follow \
   --glob '!.git/*' \

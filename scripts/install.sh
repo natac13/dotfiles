@@ -48,7 +48,8 @@ sudo apt-get install -y \
   # g++ \ # included with build-essentials
   # gcc \ # included with build-essentials
   jq \
-  xclip 
+  xclip \
+  bash-completion
 
 # bat installation isn't through apt yet
 curl -fLo bat.deb https://github.com/sharkdp/bat/releases/download/v0.15.4/bat-musl_0.15.4_amd64.deb
