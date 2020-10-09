@@ -8,9 +8,49 @@ case $- in
       *) return;;
 esac
 
-if [ -f ~/.bash_profile ]; then
-    . ~/.bash_profile
+# failing glob expands to nothing, rather than itself
+shopt -s nullglob 
+
+##################################################
+# Define Dotfiles repo variable
+##################################################
+# if [ -z "$DOTFILES" ]; then
+export DOTFILES="$HOME/projects/dotfiles"
+# fi
+
+##################################################
+# Load Color variables
+##################################################
+if [ -f "${DOTFILES}/bash/colors.sh" ]; then
+  source "${DOTFILES}/bash/colors.sh"
 fi
+
+
+##################################################
+# Load utilities functions
+##################################################
+LIB="${DOTFILES}/bash/lib/"
+for _bash_lib_file in "$LIB"/*.sh
+do
+  source "$_bash_lib_file"
+done
+
+##################################################
+# Load Aliases, Completions
+##################################################
+ALIAS_DIR="${DOTFILES}/bash/aliases/"
+for alias_file in "$ALIAS_DIR"/*.sh
+do
+  source "$alias_file"
+done
+
+COMPLETIONS_DIR="${DOTFILES}/bash/completions/"
+for completion_file in "$COMPLETIONS_DIR"/*.sh
+do
+  source "$completion_file"
+done
+
+shopt -u nullglob
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
