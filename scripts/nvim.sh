@@ -38,7 +38,7 @@ git clone --depth 1 https://github.com/airblade/vim-gitgutter.git
 nvim -u NONE -c "helptags vim-gitgutter/doc" -c q
 git clone --depth 1 --branch release https://github.com/neoclide/coc.nvim.git
 nvim -u NONE -c "helptags coc.nvim/doc" -c q
-git close --depth 1 --branch release https://github.com/chrisbra/unicode.vim.git
+git clone --depth 1 --branch release https://github.com/chrisbra/unicode.vim.git
 nvim -u NONE -c "helptags unicode.vim/doc" -c q
 # Install extensions
 if [ ! -d "$COC_EXT_PATH" ]; then
