@@ -5,13 +5,16 @@ UNAME        := $(shell uname -s)
 USER         := $(shell whoami)
 COC_EXT_PATH := $(shell echo $(HOME)/.config/coc/extensions)
 
+IRed         := '\033[0;91m'
+IGreen       := '\033[0;92m'
+IBlue        := '\033[0;94m'
+Color_Off    := '\033[0m'
+White        := '\033[1m'
 ifeq ($(UNAME), Linux)
   OS := linux
 endif
 
 .PHONY: all install
-
-all: install nvim node
 
 install: $(OS)
 
@@ -35,9 +38,7 @@ usage:
 	\\n\
 	  make unlink  Remove symlinks created by \`make link\`.\\n\
 	\\n\
-	  make nvim  Install Neovim.\\n\
-	\\n\
-	  make ndoe Install node, npm and yarn.\\n\
+	  make nvim node git aws docker \\n\
 	\\n\
 	"
 
@@ -71,7 +72,7 @@ unlink:
 	@printf "\\033[32m✓\\033[0m Symlinks removed. Manually remove ~/dotfiles directory if needed.\\n"
 
 
-.PHONY: install nvim node git
+.PHONY: install nvim node git docker aws
 
 install:
 	@bash ./scripts/install.sh
@@ -84,3 +85,33 @@ node:
 
 git:
 	@bash ./scripts/git.sh
+
+aws:
+	@print "${IBlue}Setup aws cli${Color_Off}"
+	@bash ./scripts/aws.sh
+
+docker:
+	@printf "${IBlue}Setup Docker...${Color_Off}\\nInstall \`apt\` packages.\\n"
+	sudo apt-get -y install \
+		apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+	@printf "Add Docker’s official GPG key.\\n"
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	@printf "Verify key fingerprint.\\n"
+	sudo apt-key fingerprint 0EBFCD88
+	sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+	sudo apt-get update
+	sudo apt-get install docker-ce docker-ce-cli containerd.io
+	@printf "Allow use of Docker without sudo.\\n"
+	sudo groupadd docker
+	sudo usermod -aG docker $(USER)
+	newgrp dockeu
+	sudo systemctl enable docker
+
+all: nvim node git link aws
