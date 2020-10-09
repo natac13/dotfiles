@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config/nvim"
 if [ -x /usr/bin/nvim ]; then
   export EDITOR=nvim
   export VISUAL=nvim
-  else
+else
   export EDITOR=vim
   export VISUAL=vim
 fi
