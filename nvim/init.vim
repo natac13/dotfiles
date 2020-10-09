@@ -119,10 +119,10 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 map <silent> <leader><enter> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
 
 """"""""""""""""""""""""""""""
 " => Status line
@@ -312,5 +312,18 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""
 let g:netrw_liststyle = 3
 let g:netrw_banner = 1
-let g:netrw_winsize = 30
-nnoremap <leader>e :Vexplor<CR>
+let g:netrw_winsize = 70
+" Hit enter in the file browser to open the selected
+" file with :vsplit to the right of the browser.
+let g:netrw_browse_split = 4
+" vsplit netrw to the left window
+let g:netrw_altv = 1
+" hsplit netrw to the top window
+let g:netrw_alto = 1
+
+" Change directory to the current buffer when opening files.
+set autochdir
+nnoremap <leader>e :Lexplore<CR>
+
+
+set completefunc=emoji#complete
