@@ -72,7 +72,7 @@ unlink:
 	@printf "\\033[32m✓\\033[0m Symlinks removed. Manually remove ~/dotfiles directory if needed.\\n"
 
 
-.PHONY: install nvim node git docker aws
+.PHONY: install nvim node git docker aws fzf-install fzf-update
 
 install:
 	@bash ./scripts/install.sh
@@ -113,5 +113,11 @@ docker:
 	sudo usermod -aG docker $(USER)
 	newgrp dockeu
 	sudo systemctl enable docker
+
+fzf-install:
+	@bash ./scripts/fzf-install.sh
+
+fzf-update:
+	@bash ./scripts/fzf-update.sh
 
 all: nvim node git link aws
