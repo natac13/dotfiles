@@ -40,6 +40,9 @@ git clone --depth 1 --branch release https://github.com/neoclide/coc.nvim.git
 nvim -u NONE -c "helptags coc.nvim/doc" -c q
 git clone --depth 1 https://github.com/chrisbra/unicode.vim.git
 nvim -u NONE -c "helptags unicode.vim/doc" -c q
+git clone --depth 1 https://github.com/leafgarland/typescript-vim.git
+git clone --depth 1 https://github.com/peitalin/vim-jsx-typescript.git
+
 # Install extensions
 if [ ! -d "$COC_EXT_PATH" ]; then
   mkdir -p "$HOME/.config/coc/extensions"

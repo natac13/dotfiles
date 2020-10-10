@@ -34,6 +34,11 @@ case $igh in
     sudo apt update
     sudo apt install gh
     printf "${IGreen}✓${Color_Off}"
+    printf "Login to gh.\\n"
+    gh auth login
+    gh config set editor nvim
+    gh config set prompt enabled
+    gh config set git_protocol https
     ;;
   [Nn]* );;
   * )

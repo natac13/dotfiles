@@ -101,7 +101,9 @@ set ai "Auto indent
 set si "Smart indent
 set nowrap "Wrap lines
 
-
+" set code folding for indented lines
+set foldmethod=indent
+set nofoldenable
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
@@ -326,4 +328,9 @@ set autochdir
 nnoremap <leader>e :Lexplore<CR>
 
 
-set completefunc=emoji#complete
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-jsx-typescript
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" set filetypes as typescript.tsx
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+
