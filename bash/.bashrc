@@ -184,13 +184,19 @@ export PROMPT_COMMAND=makePrompt
 #######################################################
 # PATH
 #######################################################
-# set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-# This is where you put your hand rolled scripts (remember to chmod them)
-    export PATH="$HOME/bin:$PATH"
-    export PATH="$HOME/.local/bin:$PATH"
-    export PATH="$HOME/npm-global/bin:$PATH"
+  mkdir "$HOME/bin"
 fi
+
+if [ -d "$HOME/.local/bin" ] ; then
+  mkdir "$HOME/.local/bin"
+fi
+# set PATH so it includes user's private bin if it exists
+# This is where you put your hand rolled scripts (remember to chmod them)
+export PATH="$HOME/bin:$PATH"
+# various installed programs
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/npm-global/bin:$PATH"
 
 #######################################################
 # Editor
@@ -207,7 +213,7 @@ fi
 #######################################################
 # FZF
 #######################################################
-export FZF_DEFAULT_OPTS='--layout=reverse --height 40%'
+export FZF_DEFAULT_OPTS='--layout=reverse --height 50%'
 export FZF_DEFAULT_COMMAND="rg --smart-case --files --no-ignore --hidden --follow \
   --glob '!.git/*' \
   --glob '!.DS_Store' \
