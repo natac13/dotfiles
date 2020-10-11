@@ -183,7 +183,8 @@ let g:coc_global_extensions = [
   \ 'coc-html',
   \ 'coc-css',
   \ 'coc-graphql',
-  \ 'coc-yaml'
+  \ 'coc-yaml',
+  \ 'coc-explorer'
   \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -290,7 +291,7 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent><nowait> <space>ex  :<C-u>CocList extensions<cr>
 " Show commands.
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
@@ -305,9 +306,9 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 
-" nnoremap <leader>ed :CocCommand explorer<CR>
+nnoremap <leader>e :CocCommand explorer<CR>
 
-
+" autocmd VimEnter *  CocCommand explorer
 
 """""""""""""""""""""""""""""""""""""""""""""""""
 "  Netrw
@@ -322,10 +323,10 @@ let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 " hsplit netrw to the top window
 let g:netrw_alto = 1
+" nnoremap <leader>e :Lexplore<CR>
 
 " Change directory to the current buffer when opening files.
 set autochdir
-nnoremap <leader>e :Lexplore<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""

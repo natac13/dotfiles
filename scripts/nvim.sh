@@ -54,4 +54,4 @@ fi
 
 flags="--global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod"
 # Change extension names to the extensions you need
-npm install coc-snippets coc-html coc-css coc-tsserver coc-json coc-graphql coc-yaml coc-pairs coc-prettier coc-eslint coc-emoji $flags
+npm install coc-snippets coc-explorer coc-html coc-css coc-tsserver coc-json coc-graphql coc-yaml coc-pairs coc-prettier coc-eslint coc-emoji $flags

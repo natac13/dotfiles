@@ -18,10 +18,5 @@
   "prettier.jsxSingleQuote": false,
   "prettier.disableSuccessMessage": true,
   "prettier.arrowParens": "always",
-  "coc.source.emoji.filetypes": [
-    "markdown",
-    "sh",
-    "typescript",
-    "typescriptreact"
-  ]
+  "explorer.icon.enableNerdfont": true
 }
