@@ -26,6 +26,23 @@ if [ -f "${DOTFILES}/bash/colors.sh" ]; then
 fi
 
 
+#######################################################
+# PATH
+#######################################################
+if [ ! -d "$HOME/bin" ] ; then
+  mkdir "$HOME/bin"
+fi
+
+if [ ! -d "$HOME/.local/bin" ] ; then
+  mkdir "$HOME/.local/bin"
+fi
+# set PATH so it includes user's private bin if it exists
+# This is where you put your hand rolled scripts (remember to chmod them)
+export PATH="$HOME/bin:$PATH"
+# various installed python programs
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/npm-global/bin:$PATH"
+
 ##################################################
 # Utilities functions
 ##################################################
@@ -181,22 +198,6 @@ function makePrompt() {
 }
 export PROMPT_COMMAND=makePrompt
 
-#######################################################
-# PATH
-#######################################################
-if [ -d "$HOME/bin" ] ; then
-  mkdir "$HOME/bin"
-fi
-
-if [ -d "$HOME/.local/bin" ] ; then
-  mkdir "$HOME/.local/bin"
-fi
-# set PATH so it includes user's private bin if it exists
-# This is where you put your hand rolled scripts (remember to chmod them)
-export PATH="$HOME/bin:$PATH"
-# various installed programs
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/npm-global/bin:$PATH"
 
 #######################################################
 # Editor
