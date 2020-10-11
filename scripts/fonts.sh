@@ -13,6 +13,10 @@ fi
 # Custom Font dependencies - MyOperatorMono
 ##################################################
 # Fira Code install.
+echo "$(tput setaf 33)Downloading FiraCode fonts."
+# echo "Make sure to download the NerdFont pathced version to update MyOperatorMono"
+# echo "https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode$(tput sgr0)"
+
 if [ ! -d "${FONTS_DIR}/firacode" ]; then
   mkdir -p "${FONTS_DIR}/firacode"
 fi
@@ -32,11 +36,12 @@ fi
 cp -u "${DOTFILES}/fonts/Script12BTRoman.ttf" "${FONTS_DIR}/Script12BTRoman.ttf"
 
 # MyOperatorMono
-
 cp -u "${DOTFILES}/fonts/MyOperatorMono/MyOperatorMono-Regular.ttf" "${FONTS_DIR}/MyOperatorMono/MyOperatorMono-Regular.ttf"
 cp -u "${DOTFILES}/fonts/MyOperatorMono/MyOperatorMono-Light.ttf" "${FONTS_DIR}/MyOperatorMono/MyOperatorMono-Light.ttf"
 cp -u "${DOTFILES}/fonts/MyOperatorMono/MyOperatorMono-Bold.ttf" "${FONTS_DIR}/MyOperatorMono/MyOperatorMono-Bold.ttf"
 cp -u "${DOTFILES}/fonts/MyOperatorMono/MyOperatorMono-Italic.ttf" "${FONTS_DIR}/MyOperatorMono/MyOperatorMono-Italic.ttf"
+cp -u "${DOTFILES}/fonts/MyOperatorMono/MyOperatorMono-Regular-Nerd.ttf" "${FONTS_DIR}/MyOperatorMono/MyOperatorMono-Regular-Nerd.ttf"
+
 ##################################################
 # Google Fonts
 ##################################################
