@@ -18,7 +18,6 @@ alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
 alias ll='ls -lh'      #long list
 alias lll='ls -l -a'
 
-alias cpu="top -F -R -o cpu"
 alias sizeOf='du -hs'
 alias ydl="youtube-dl"
 
