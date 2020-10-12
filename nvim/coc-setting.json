@@ -11,12 +11,13 @@
     "css",
     "html"
   ],
-  "typescript.validate.enable": false,
+  "typescript.validate.enable": true,
   "eslint.enable": true,
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "prettier.jsxSingleQuote": false,
   "prettier.disableSuccessMessage": true,
   "prettier.arrowParens": "always",
-  "explorer.icon.enableNerdfont": true
+  "explorer.icon.enableNerdfont": true,
+  "tsserver.enable": true
 }

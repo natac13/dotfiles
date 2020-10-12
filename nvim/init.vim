@@ -1,4 +1,14 @@
-let mapleader = "\<space>" 
+set nocompatible
+filetype plugin indent on
+
+" Search down into subfolders
+" Provides tab-completion for all file-related tasks
+set path+=**
+
+" Display all matching files when we tab complete
+set wildmenu
+
+let mapleader = "\<space>"
 set encoding=utf-8
 syntax enable
 
@@ -21,7 +31,15 @@ set incsearch
 set magic
 set ruler
 set cmdheight=1
+set wildmenu
 
+set autoread
+" Delete characters outside of insert area
+set backspace=indent,eol,start
+set display+=lastline
+set scrolloff=1
+" Always show the status line
+set laststatus=2
 " ===============================================
 "                    THEME
 " ===============================================
@@ -97,13 +115,15 @@ set softtabstop=2
 set lbr
 set tw=500
 
-set ai "Auto indent
+set autoindent "Auto indent
 set si "Smart indent
 set nowrap "Wrap lines
 
 " set code folding for indented lines
-set foldmethod=indent
+set foldmethod=syntax
 set nofoldenable
+" Delete empty space from the end of lines on every save
+autocmd BufWritePre * :%s/\s\+$//e
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
@@ -165,21 +185,21 @@ let g:airline#extensions#branch#enabled=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <C-p> :Files<cr>
+nnoremap <C-p> :GFiles<cr>
 nnoremap <Leader>b :Buffers<cr>
 nnoremap <Leader>s :BLines<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  COC 
+"  COC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc config
 let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-pairs',
   \ 'coc-tsserver',
-  \ 'coc-eslint', 
-  \ 'coc-prettier', 
-  \ 'coc-json', 
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ 'coc-json',
   \ 'coc-html',
   \ 'coc-css',
   \ 'coc-graphql',
@@ -307,31 +327,26 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 
 nnoremap <leader>e :CocCommand explorer<CR>
-
+nnoremap <leader>O :call CocAction('runCommand', 'editor.action.organizeImport')
 " autocmd VimEnter *  CocCommand explorer
 
 """""""""""""""""""""""""""""""""""""""""""""""""
 "  Netrw
 """""""""""""""""""""""""""""""""""""""""""""""""
+" tree view
 let g:netrw_liststyle = 3
-let g:netrw_banner = 1
+" removes banner at the top
+let g:netrw_banner = 0
+" sets the size of the oening window, whether explorer or file
 let g:netrw_winsize = 70
-" Hit enter in the file browser to open the selected
-" file with :vsplit to the right of the browser.
+" open in prior window
 let g:netrw_browse_split = 4
 " vsplit netrw to the left window
 let g:netrw_altv = 1
 " hsplit netrw to the top window
 let g:netrw_alto = 1
+let g:netrw_list_hide=netrw_gitignore#Hide()
 " nnoremap <leader>e :Lexplore<CR>
-
-" Change directory to the current buffer when opening files.
-set autochdir
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-jsx-typescript
-""""""""""""""""""""""""""""""""""""""""""""""""""
-" set filetypes as typescript.tsx
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
-
+"
+" YATS config
+set re=0 " docs says this helps with performance
