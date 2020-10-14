@@ -348,5 +348,10 @@ let g:netrw_alto = 1
 let g:netrw_list_hide=netrw_gitignore#Hide()
 " nnoremap <leader>e :Lexplore<CR>
 "
+"""""""""""""""""""""""""""""""""""""""""""""""""
+"  Vim-Commentary
+"""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType typescriptreact setlocal commentstring={/*\ %s\ */}
+autocmd FileType javascriptreact setlocal commentstring={/*\ %s\ */}
 " YATS config
 set re=0 " docs says this helps with performance
