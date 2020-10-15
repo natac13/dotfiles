@@ -353,5 +353,11 @@ let g:netrw_list_hide=netrw_gitignore#Hide()
 """""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType typescriptreact setlocal commentstring={/*\ %s\ */}
 autocmd FileType javascriptreact setlocal commentstring={/*\ %s\ */}
+"""""""""""""""""""""""""""""""""""""""""""""""""
+"  Vim-JSX-typescript
+"""""""""""""""""""""""""""""""""""""""""""""""""
+" set filetypes as typescript.tsx
+" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+
 " YATS config
 set re=0 " docs says this helps with performance

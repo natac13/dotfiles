@@ -9,7 +9,7 @@ case $- in
 esac
 
 # failing glob expands to nothing, rather than itself
-shopt -s nullglob 
+shopt -s nullglob
 
 ##################################################
 # Dotfiles repo variable
@@ -197,13 +197,17 @@ function makePrompt() {
   export PS1=$CUSTOM_PROMPT
 }
 export PROMPT_COMMAND=makePrompt
-
-
+# Download a custom terminfo that defines sitm and ritm
+# wget https://gist.githubusercontent.com/sos4nt/3187620/raw/8e13c1fec5b72d415ed2917590348451de5f8e58/xterm-256color-italic.terminfo
+# Compile it
+# tic xterm-256color-italic.terminfo
+# Activate xterm-256color-italic.terminfo automatically
+export TERM=xterm-256color-italic
 #######################################################
 # Editor
 #######################################################
 
-if [ -x /usr/bin/nvim ]; then 
+if [ -x /usr/bin/nvim ]; then
   export EDITOR=nvim
   export VISUAL=nvim
 else

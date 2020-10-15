@@ -41,6 +41,8 @@ nvim -u NONE -c "helptags coc.nvim/doc" -c q
 git clone --depth 1 https://github.com/chrisbra/unicode.vim.git
 nvim -u NONE -c "helptags unicode.vim/doc" -c q
 git clone --depth 1 https://github.com/HerringtonDarkholme/yats.vim.git
+git clone --depth 1 https://github.com/othree/yajs.vim.git
+git clone --depth 1 https://github.com/othree/html5.vim.git
 git clone --depth 1 https://github.com/jparise/vim-graphql.git
 
 # Install extensions
