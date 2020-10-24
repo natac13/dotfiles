@@ -44,10 +44,6 @@ set laststatus=2
 "                    THEME
 " ===============================================
 try
-  " Set theme & color terminal
-  " colorscheme gruvbox
-  " let g:gruvbox_contrast_dark = 'hard'
-  " let g:gruvbox_termcolors = 256
   " For Neovim 0.1.3 and 0.1.4
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
@@ -57,10 +53,17 @@ try
   endif
 
   " Theme
-  let g:oceanic_next_terminal_bold = 1
-  let g:oceanic_next_terminal_italic = 1
-  colorscheme OceanicNext
-  let g:airline_theme='oceanicnext'
+  set background=dark
+	" colorscheme gruvbox8
+
+  " Set contrast.
+  " This configuration option should be placed before `colorscheme gruvbox-material`.
+  " Available values: 'hard', 'medium'(default), 'soft'
+  " let g:gruvbox_material_background = 'medium'
+  let g:gruvbox_material_enable_italic = 1
+  packadd! gruvbox-material
+  colorscheme gruvbox-material
+
 catch
   colorscheme desert
 endtry
@@ -68,15 +71,12 @@ endtry
 " turn on italics for comments
 highlight Comment cterm=italic gui=italic
 
-set background=dark
-
 " set number of line VIM remembers as history
 set history=500
 
-
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
+  set t_Co=256
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -120,7 +120,7 @@ set si "Smart indent
 set nowrap "Wrap lines
 
 " set code folding for indented lines
-set foldmethod=syntax
+set foldmethod=indent
 set nofoldenable
 " Delete empty space from the end of lines on every save
 autocmd BufWritePre * :%s/\s\+$//e
@@ -152,20 +152,6 @@ nmap <C-l> <C-W>l
 " Always show the status line
 set laststatus=2
 
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
-
 " Use mouse
 set mouse=a
 
@@ -176,16 +162,73 @@ set showtabline=2
 set clipboard+=unnamedplus
 "set clipboard=unnamed
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ariline (statusbar)
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#hunks#enabled=0
-let g:airline#extensions#branch#enabled=1
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#hunks#enabled=0
+" let g:airline#extensions#branch#enabled=1
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  Lightline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:lightline = {
+  \ 'colorscheme': 'gruvbox_material',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ [ 'percent', 'cocstatus' ],
+  \              [ 'lineinfo' ],
+  \              [ 'currentfunction', 'filetype' ] ]
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'FugitiveHead',
+  \   'cocstatus': 'coc#status',
+  \   'currentfunction': 'CocCurrentFunction',
+  \   'fileformat': 'LightlineFileformat',
+  \   'filetype': 'LightlineFiletype',
+  \   'filename': 'LightLineFilename'
+  \ },
+  \ 'tab': {
+  \   'active': [ 'tabnum', 'filename', 'modified'],
+  \   'inactive': [' tabnum', 'filename', 'modified']
+  \ },
+  \ }
+
+function! LightLineFilename()
+	let name = ""
+	let subs = split(expand('%'), "/")
+	let i = 1
+	for s in subs
+		let parent = name
+		if  i == len(subs)
+			let name = parent . '/' . s
+		elseif i == 1
+			let name = s
+		else
+			let name = parent . '/' . strpart(s, 0, 2)
+		endif
+		let i += 1
+	endfor
+  return name
+endfunction
+
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  FZF
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <C-p> :GFiles<cr>
+nnoremap <C-p> :Files<cr>
 nnoremap <Leader>b :Buffers<cr>
 nnoremap <Leader>s :BLines<cr>
 
@@ -302,11 +345,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -329,6 +367,13 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 nnoremap <leader>e :CocCommand explorer<CR>
 nnoremap <leader>O :call CocAction('runCommand', 'editor.action.organizeImport')
 " autocmd VimEnter *  CocCommand explorer
+nmap <expr> <silent> <C-d> <SID>select_current_word()
+function! s:select_current_word()
+  if !get(g:, 'coc_cursors_activated', 0)
+    return "\<Plug>(coc-cursors-word)"
+  endif
+  return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
+endfunc
 
 """""""""""""""""""""""""""""""""""""""""""""""""
 "  Netrw
@@ -349,15 +394,11 @@ let g:netrw_list_hide=netrw_gitignore#Hide()
 " nnoremap <leader>e :Lexplore<CR>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""
-"  Vim-Commentary
+" Yats.vim
 """""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType typescriptreact setlocal commentstring={/*\ %s\ */}
-autocmd FileType javascriptreact setlocal commentstring={/*\ %s\ */}
-"""""""""""""""""""""""""""""""""""""""""""""""""
-"  Vim-JSX-typescript
-"""""""""""""""""""""""""""""""""""""""""""""""""
-" set filetypes as typescript.tsx
-" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
-
-" YATS config
 set re=0 " docs says this helps with performance
+
+"
+" tComment
+let g:tcomment#filetype#guess_typescript = 1
+let g:tcomment#filetype#guess_typescriptreact = 1

@@ -20,17 +20,18 @@ COC_EXT_PATH="$HOME/.config/coc/extensions"
 
 echo "Clone all vim plugins."
 cd ~/.local/share/nvim/site/pack/natac/start
-git clone --depth 1 https://github.com/morhetz/gruvbox.git
-git clone --depth 1 https://github.com/mhartington/oceanic-next.git
+git clone --depth 1 https://github.com/sheerun/vim-polyglot.git
+nvim -u NONE -c "helptags vim-polyglot/doc" -c q
 git clone --depth 1 https://github.com/vim-airline/vim-airline.git
 nvim -u NONE -c "helptags vim-airline/doc" -c q
 git clone --depth 1 https://github.com/tpope/vim-fugitive.git
-nvim -u NONE -c "helptags fugitive/doc" -c q
+nvim -u NONE -c "helptags vim-fugitive/doc" -c q
 git clone --depth 1 https://github.com/tpope/vim-surround.git
-nvim -u NONE -c "helptags surround/doc" -c q
-git clone --depth 1 https://github.com/tpope/vim-commentary.git
-nvim -u NONE -c "helptags commentary/doc" -c q
+nvim -u NONE -c "helptags vim-surround/doc" -c q
+git clone --depth 1 https://github.com/tomtom/tcomment_vim.git
+nvim -u NONE -c "helptags tcomment_vim/doc" -c q
 git clone --depth 1 https://github.com/junegunn/fzf.git
+./fzf/install
 nvim -u NONE -c "helptags fzf/doc" -c q
 git clone --depth 1 https://github.com/junegunn/fzf.vim.git
 nvim -u NONE -c "helptags fzf.vim/doc" -c q
@@ -40,11 +41,16 @@ git clone --depth 1 --branch release https://github.com/neoclide/coc.nvim.git
 nvim -u NONE -c "helptags coc.nvim/doc" -c q
 git clone --depth 1 https://github.com/chrisbra/unicode.vim.git
 nvim -u NONE -c "helptags unicode.vim/doc" -c q
-git clone --depth 1 https://github.com/HerringtonDarkholme/yats.vim.git
-git clone --depth 1 https://github.com/othree/yajs.vim.git
-git clone --depth 1 https://github.com/othree/html5.vim.git
-git clone --depth 1 https://github.com/jparise/vim-graphql.git
+git clone --depth 1 https://github.com/justinmk/vim-sneak.git
+nvim -u NONE -c "helptags vim-sneak/doc" -c q
+git clone --depth 1 https://github.com/sainnhe/gruvbox-material.git
+nvim -u NONE -c "helptags gruvbox-material/doc" -c q
 
+cd ../opt
+git clone --depth 1 https://github.com/lifepillar/vim-gruvbox8.git
+nvim -u NONE -c "helptags vim-gruvbox8/doc" -c q
+
+cd $HOME
 # Install extensions
 if [ ! -d "$COC_EXT_PATH" ]; then
   mkdir -p "$HOME/.config/coc/extensions"
