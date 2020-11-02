@@ -13,7 +13,7 @@ function doing () {
   printf "\\033[33m ➜ \\033[0m $1...\\n"
 }
 
-# Get the lastest version of neovim 
+# Get the lastest version of neovim
 ##################################################
 # Update ppa repositories.
 ##################################################
@@ -57,8 +57,8 @@ curl -fLo nnn.deb https://github.com/jarun/nnn/releases/download/v3.4/nnn_3.4-1_
 sudo dpkg -i nnn.deb
 rm ./nnn.deb
 
-# tmux
-
+# if there are errors with Chokidar and watching file limit; run the following
+# echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
 doing "Downloading git-prompt and git-completions for bash"
 cd $HOME
@@ -71,7 +71,7 @@ success
 DOTFILES_DIR="$HOME/projects/dotfiles"
 if [ ! -d "$DOTFILES_DIR" ]; then
   doing "Create and clone dotfile directory"
-  
+
   if [ ! -d "$HOME/projects" ]
   then
     mkdir -p "$HOME/projects"

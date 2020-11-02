@@ -202,7 +202,8 @@ export PROMPT_COMMAND=makePrompt
 # Compile it
 # tic xterm-256color-italic.terminfo
 # Activate xterm-256color-italic.terminfo automatically
-export TERM=xterm-256color-italic
+#export TERM=xterm-256color
+#export TERM=xterm-256color-italic
 #######################################################
 # Editor
 #######################################################
