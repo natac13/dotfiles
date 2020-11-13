@@ -172,11 +172,13 @@ set clipboard+=unnamedplus
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " \   'left': [ [ 'mode', 'paste' ],
+  " \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
 let g:lightline = {
   \ 'colorscheme': 'gruvbox_material',
   \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+  \   'left': [ [ 'paste' ],
+  \             [ 'readonly', 'filename', 'modified' ] ],
   \   'right': [ [ 'percent', 'cocstatus' ],
   \              [ 'lineinfo' ],
   \              [ 'currentfunction', 'filetype' ] ]
@@ -196,20 +198,29 @@ let g:lightline = {
   \ }
 
 function! LightLineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
 	let name = ""
-	let subs = split(expand('%'), "/")
+  let path = expand('%')
+
+  if path[:len(root)-1] ==# root
+    let subs = split(path[len(root)+1:], '/')
+  else
+    let subs = split(path, '/')
+  endif
+
 	let i = 1
 	for s in subs
 		let parent = name
 		if  i == len(subs)
 			let name = parent . '/' . s
-		elseif i == 1
-			let name = s
+    elseif i+1 == len(subs)
+			let name = parent . '/' . s
 		else
-			let name = parent . '/' . strpart(s, 0, 2)
+			let name = parent . '/' . strpart(s, 0, 3)
 		endif
 		let i += 1
 	endfor
+
   return name
 endfunction
 
