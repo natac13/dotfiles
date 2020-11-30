@@ -83,7 +83,8 @@ unlink:
 	bat \
 	ripgrep \
 	tldr \
-	tmux
+	tmux \
+	mongodb-compass
 
 install:
 	@bash ./scripts/install.sh
@@ -142,5 +143,8 @@ tldr:
 
 tmux:
 	@bash ./scripts/tmux.sh
+
+mongodb-compass:
+	@bash ./scripts/mongodb-compass.sh
 
 all: nvim node git link aws
