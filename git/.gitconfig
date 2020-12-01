@@ -11,7 +11,7 @@
   co = checkout
   su = status
   br = branch
-  cm = commit
+  cm = commit --verbose
   nataclog = log --graph --decorate --oneline --all
   df = difftool
   m = merge
