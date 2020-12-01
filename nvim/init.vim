@@ -40,6 +40,15 @@ set display+=lastline
 set scrolloff=1
 " Always show the status line
 set laststatus=2
+
+" show invisibles
+set list
+set listchars=
+set listchars+=tab:·\
+set listchars+=trail:·
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=nbsp:░
 " ===============================================
 "                    THEME
 " ===============================================
