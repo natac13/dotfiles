@@ -39,13 +39,13 @@ sudo apt-get install -y \
   openssh-client \
   automake \
   unzip \
-  build-essentials \
-  # make \ # included with build-essentials
-  # g++ \ # included with build-essentials
-  # gcc \ # included with build-essentials
+  build-essential \
   jq \
   xclip \
   bash-completion
+ # make \ # included with build-essentials
+ # g++ \ # included with build-essentials
+ # gcc \ # included with build-essentials
 
 if [ ! -d "$HOME/bin" ]; then
   mkdir -p "$HOME/bin"
