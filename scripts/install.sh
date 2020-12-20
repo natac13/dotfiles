@@ -42,20 +42,15 @@ sudo apt-get install -y \
   build-essential \
   jq \
   xclip \
+  nnn \
   bash-completion
- # make \ # included with build-essentials
- # g++ \ # included with build-essentials
- # gcc \ # included with build-essentials
+  # make \ # included with build-essentials
+  # g++ \ # included with build-essentials
+  # gcc \ # included with build-essentials
 
 if [ ! -d "$HOME/bin" ]; then
   mkdir -p "$HOME/bin"
 fi
-
-# https://github.com/jarun/nnn/releases/download/v3.4/nnn_3.4-1_ubuntu20.04.amd64.deb
-# Ubuntu 20.10 has nnn v3.4 in apt repo
-curl -fLo nnn.deb https://github.com/jarun/nnn/releases/download/v3.4/nnn_3.4-1_ubuntu18.04.amd64.deb
-sudo dpkg -i nnn.deb
-rm ./nnn.deb
 
 # if there are errors with Chokidar and watching file limit; run the following
 # echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p

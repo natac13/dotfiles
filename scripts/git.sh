@@ -1,9 +1,12 @@
 #!/bin/bash
 
+DEFAULT='y'
+
 source ~/.bash_profile # adds terminal color variables
 
 printf "${IBlue}Would you like to create an ssh key for GitHub?${Color_Off} [Y/n]"
 read gen_ssh
+gen_ssh=${gen_ssh:-${DEFAULT}}
 case $gen_ssh in
   [Yy]* )
     read -p "What email are you using for Github?: " email
@@ -26,6 +29,7 @@ esac
 
 printf "${IBlue}Would you like to install gh GitHub's command line tool?${Color_Off} [Y/n]"
 read igh
+igh=${igh:-${DEFAULT}}
 case $igh in
   [Yy]* )
     printf "Installing gh...\\n"
