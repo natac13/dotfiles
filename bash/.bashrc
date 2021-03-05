@@ -204,6 +204,7 @@ export PROMPT_COMMAND=makePrompt
 # Activate xterm-256color-italic.terminfo automatically
 #export TERM=xterm-256color
 #export TERM=xterm-256color-italic
+eval "$(/home/natac/.linuxbrew/bin/brew shellenv)"
 #######################################################
 # Editor
 #######################################################

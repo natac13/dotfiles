@@ -49,6 +49,7 @@ set listchars+=trail:·
 set listchars+=extends:»
 set listchars+=precedes:«
 set listchars+=nbsp:░
+
 " ===============================================
 "                    THEME
 " ===============================================
@@ -121,18 +122,31 @@ set tabstop=2
 set softtabstop=2
 
 " Linebreak on 500 characters
-set lbr
-set tw=500
+" set lbr
+" set tw=500
 
 set autoindent "Auto indent
 set si "Smart indent
-set nowrap "Wrap lines
+
+" line warp
+set wrap
+set linebreak
+set textwidth=0
+set wrapmargin=0
 
 " set code folding for indented lines
 set foldmethod=indent
 set nofoldenable
 " Delete empty space from the end of lines on every save
-autocmd BufWritePre * :%s/\s\+$//e
+" autocmd BufWritePre * :%s/\s\+$//e
+function! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
@@ -267,7 +281,11 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-graphql',
   \ 'coc-yaml',
-  \ 'coc-explorer'
+  \ 'coc-explorer',
+  \ 'coc-tailwindcss',
+  \ 'coc-spell-checker',
+  \ 'coc-svelte',
+  \ 'coc-cfn-lint'
   \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -394,6 +412,28 @@ function! s:select_current_word()
   endif
   return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
 endfunc
+
+
+
+" Snippets
+" " Use <C-l> for trigger snippet expand.
+" imap <C-l> <Plug>(coc-snippets-expand)
+"
+" " Use <C-j> for select text for visual placeholder of snippet.
+" vmap <C-j> <Plug>(coc-snippets-select)
+"
+" " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+" let g:coc_snippet_next = '<c-j>'
+"
+" " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+" let g:coc_snippet_prev = '<c-k>'
+"
+" " Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+"
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""
 "  Netrw
