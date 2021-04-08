@@ -5,7 +5,7 @@
   email = sean.campbell13@gmail.com
   username = natac13
 [core]
-	editor = nvim
+  editor = nvim
   autocrlf = input
 [alias]
   co = checkout
@@ -20,7 +20,7 @@
   a = add
   send = push origin master --tags
   undo = reset --soft HEAD^
-  passw = cofig --global credential.helper 'cache --timeout=13000'
+  passw = config --global credential.helper 'cache --timeout=13000'
 [merge]
   tool = default-difftool
 [diff]
@@ -29,7 +29,7 @@
   cmd = nvim -d $LOCAL $REMOTE
   path = nvim
 [credential]
-  helper = cache --timeout=13000
+	helper = cache
 [push]
   default = simple
 [pull]
@@ -37,3 +37,5 @@
 [color]
   ui = true
 
+[pager]
+	branch = false
