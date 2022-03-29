@@ -77,13 +77,16 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws brew composer common-aliases git gitignore history iterm2 node npm nvm tmux yarn zsh_reload tools)
+plugins=(aws brew composer common-aliases docker docker-compose git gitignore history iterm2 node npm nvm tmux yarn tools zsh-completions)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export PATH="/usr/local/bin:$PATH"
+export PATH="Users/natac/.composer/vender/bin:$PATH"
 
+# for Solana install
+export PATH="/Users/natac/.local/share/solana/install/active_release/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -95,6 +98,9 @@ export PATH="/usr/local/bin:$PATH"
 # else
 #   export EDITOR='mvim'
 # fi
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
 #######################################################
 # Editor
 #######################################################
@@ -106,8 +112,6 @@ else
   export EDITOR=vim
   export VISUAL=vim
 fi
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -125,3 +129,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
