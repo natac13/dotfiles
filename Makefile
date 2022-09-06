@@ -46,28 +46,28 @@ usage:
 
 link:
 	mkdir -p $(FONT_DIR)
-	ln -fs $(DOTFILES_DIR)/bash/.bash_profile $(HOME)/.bash_profile
-	ln -fs $(DOTFILES_DIR)/bash/.bash_aliases $(HOME)/.bash_aliases
-	ln -fs $(DOTFILES_DIR)/bash/.bashrc $(HOME)/.bashrc
-	ln -fs $(DOTFILES_DIR)/bash/.curlrc $(HOME)/.curlrc
+	# ln -fs $(DOTFILES_DIR)/bash/.bash_profile $(HOME)/.bash_profile
+	# ln -fs $(DOTFILES_DIR)/bash/.bash_aliases $(HOME)/.bash_aliases
+	# ln -fs $(DOTFILES_DIR)/bash/.bashrc $(HOME)/.bashrc
+	# ln -fs $(DOTFILES_DIR)/bash/.curlrc $(HOME)/.curlrc
 	ln -fs $(DOTFILES_DIR)/fonts/MyOperatorMono-Regular.otf $(FONT_DIR)/MyOperatorMono-Regular.otf
 	ln -fs $(DOTFILES_DIR)/fonts/MyOperatorMono-Italic.otf $(FONT_DIR)/MyOperatorMono-Italic.otf
 	ln -fs $(DOTFILES_DIR)/nvim/init.vim $(HOME)/.config/nvim/init.vim
 	ln -fs $(DOTFILES_DIR)/nvim/coc-settings.json $(HOME)/.config/nvim/coc-settings.json
-	ln -fs $(DOTFILES_DIR)/tmux/.tmux.conf $(HOME)/.tmux.conf
+	# ln -fs $(DOTFILES_DIR)/tmux/.tmux.conf $(HOME)/.tmux.conf
 	ln -fs $(DOTFILES_DIR)/git/.gitconfig $(HOME)/.gitconfig
 	@printf "\\033[32m✓\\033[0m Symlinks created.\\n"
 
 unlink:
-	unlink $(HOME)/.bash_profile
-	unlink $(HOME)/.bash_aliases
-	unlink $(HOME)/.bashrc
-	unlink $(HOME)/.curlrc
+	# unlink $(HOME)/.bash_profile
+	# unlink $(HOME)/.bash_aliases
+	# unlink $(HOME)/.bashrc
+	# unlink $(HOME)/.curlrc
 	unlink $(FONT_DIR)/MyOperatorMono-Regular.otf
 	unlink $(FONT_DIR)/MyOperatorMono-Italic.otf
 	unlink $(HOME)/.config/nvim/init.vim
 	unlink $(HOME)/.config/nvim/coc-settings.json
-	unlink $(HOME)/.tmux.conf
+	# unlink $(HOME)/.tmux.conf
 	unlink $(HOME)/.gitconfig
 	@printf "\\033[32m✓\\033[0m Symlinks removed. Manually remove ~/dotfiles directory if needed.\\n"
 
@@ -85,6 +85,11 @@ unlink:
 	tldr \
 	tmux \
 	mongodb-compass
+
+new:
+	@bash ./scripts/setup.sh
+	@bash ./scripts/nvim.sh
+	link
 
 install:
 	@bash ./scripts/install.sh

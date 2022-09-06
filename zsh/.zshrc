@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws brew composer common-aliases docker docker-compose git gitignore history iterm2 node npm nvm tmux yarn tools zsh-completions)
+plugins=(aws brew composer common-aliases docker docker-compose encode64 extract gatsby gh git gitignore git-flow history iterm2 macos node npm nvm redis-cli tmux tldr tools vscode yarn wp-cli zsh-completions zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -87,6 +87,12 @@ export PATH="Users/natac/.composer/vender/bin:$PATH"
 
 # for Solana install
 export PATH="/Users/natac/.local/share/solana/install/active_release/bin:$PATH"
+
+# ZSH VI mode
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+# Append a command directly
+# Since the default initialization mode, this plugin will overwrite the previous key bindings, this causes the key bindings of other plugins (i.e. fzf, zsh-autocomplete, etc.) to fail.
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -113,6 +119,8 @@ else
   export VISUAL=vim
 fi
 
+
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -121,9 +129,16 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+zstyle ':completion:*:*:git:*' script /usr/local/share/zsh/site-functions/git-completion.bash
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+[ -s "/usr/local/share/zsh/site-functions/git-completion.bash" ] && . "/usr/local/share/zsh/site-functions/git-completion.bash"  # This loads azure-cli bash_completion
+[ -s "/usr/local/etc/bash_completion.d/az" ] && . "/usr/local/etc/bash_completion.d/az"  # This loads azure-cli bash_completion
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -133,3 +148,4 @@ export NVM_DIR="$HOME/.nvm"
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+#
