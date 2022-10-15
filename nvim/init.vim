@@ -271,21 +271,25 @@ nnoremap <Leader>s :BLines<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc config
 let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-tsserver',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-json',
-  \ 'coc-html',
+  \ 'coc-cfn-lint',
   \ 'coc-css',
-  \ 'coc-graphql',
-  \ 'coc-yaml',
+  \ 'coc-docker',
+  \ 'coc-emoji',
+  \ 'coc-eslint',
   \ 'coc-explorer',
-  \ 'coc-tailwindcss',
+  \ 'coc-graphql',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-pairs',
+  \ 'coc-prettier',
+  \ 'coc-sh',
+  \ 'coc-snippets',
+  \ 'coc-solidity',
   \ 'coc-spell-checker',
-  \ 'coc-svelte',
-  \ 'coc-cfn-lint'
+  \ 'coc-sql',
+  \ 'coc-tailwindcss',
+  \ 'coc-tsserver',
+  \ 'coc-yaml'
   \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by

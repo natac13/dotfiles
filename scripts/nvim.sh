@@ -17,7 +17,6 @@ fi
 
 COC_EXT_PATH="$HOME/.config/coc/extensions"
 
-
 echo "Clone all vim plugins."
 cd ~/.local/share/nvim/site/pack/natac/start
 git clone --depth 1 https://github.com/sheerun/vim-polyglot.git
@@ -57,9 +56,29 @@ if [ ! -d "$COC_EXT_PATH" ]; then
 fi
 cd ~/.config/coc/extensions
 if [ ! -f package.json ]; then
-  echo '{"dependencies":{}}'> package.json
+  echo '{"dependencies":{}}' >package.json
 fi
 
 flags="--global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod"
 # Change extension names to the extensions you need
-npm install coc-spell-checker coc-snippets coc-explorer coc-html coc-css coc-cfn-lint coc-tailwindcss coc-tsserver coc-json coc-graphql coc-yaml coc-pairs coc-prettier coc-eslint coc-emoji $flags
+npm install \
+  coc-cfn-lint \
+  coc-css \
+  coc-docker \
+  coc-emoji \
+  coc-eslint \
+  coc-explorer \
+  coc-graphql \
+  coc-html \
+  coc-json \
+  coc-pairs \
+  coc-prettier \
+  coc-sh \
+  coc-snippets \
+  coc-solidity \
+  coc-spell-checker \
+  coc-sql \
+  coc-tailwindcss \
+  coc-tsserver \
+  coc-yaml \
+  $flags
