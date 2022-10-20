@@ -7,7 +7,7 @@ mkdir -p "$HOME/.local/share/nvim/site/pack/natac/start"
 mkdir -p "$HOME/.local/share/nvim/undo"
 mkdir -p "$HOME/.config/nvim"
 
-if [ -x /usr/bin/nvim ]; then
+if [ -x $(which nvim) ]; then
   export EDITOR=nvim
   export VISUAL=nvim
 else

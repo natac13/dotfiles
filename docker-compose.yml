@@ -4,5 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - USERNAME=natac
+    working_dir: /workspace
+    user: natac
     volumes:
-      - ./install.sh:/workspace/install.sh
+      - .:/workspace
