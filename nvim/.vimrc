@@ -38,7 +38,7 @@ set history=500
 filetype plugin on
 filetype indent on
 
-" Set to auto read when a file is changed from the outside
+
 set autoread
 au FocusGained,BufEnter * checktime
 
@@ -173,8 +173,24 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme desert
+    " Important!!
+    if has('termguicolors')
+        set termguicolors
+    endif
+
+    " Set contrast.
+    " This configuration option should be placed before `colorscheme gruvbox-material`.
+    " Available values: 'hard', 'medium'(default), 'soft'
+    let g:gruvbox_material_background = 'hard'
+    " For better performance
+    let g:gruvbox_material_better_performance = 1
+    colorscheme gruvbox-material
+
+    " set the airline theme to the same colorscheme
+    let g:airline_theme = 'gruvbox_material'
+    " packadd! gruvbox-material
 catch
+    colorscheme desert
 endtry
 
 set background=dark
@@ -422,19 +438,34 @@ endfunction
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
+" Color Scheme
 Plug 'sainnhe/gruvbox-material'
 
-" Make sure to use single quotes
-" Install with `:PlugInstall`
+" Syntax highlighting
+Plug 'sheerun/vim-polyglot'
+
+" Task bar
+Plug 'vim-airline/vim-airline'
+
+Plug 'tpope/vim-fugitive'
 
 " https://github.com/itchyny/lightline.vim
 " Plug 'itchyny/lightline.vim'
 
 " https://github.com/tpope/vim-commentary
 Plug 'tpope/vim-commentary'
+" Plug 'tomtom/tcomment_vim'
 
 " https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
+
+" On-demand loading
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
+
+Plug 'justinmk/vim-sneak'
+
+Plug 'airblade/vim-gitgutter'
 
 " https://github.com/tpope/vim-vinegar
 " Plug 'tpope/vim-vinegar'
@@ -450,3 +481,25 @@ Plug 'tpope/vim-surround'
 
 " Initialize plugin system
 call plug#end()
+
+
+if !has('nvim')
+    " set ttymouse=xterm2
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>n :NERDTreeFocus<CR>
+" nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+" nnoremap <C-f> :NERDTreeFind<CR>
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+" Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
