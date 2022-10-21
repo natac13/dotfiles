@@ -1,14 +1,47 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" drop vi support - kept for vim compatibility but not needed for nvim
+" Probably not needed with Vim 8+
 set nocompatible
-filetype plugin indent on
+
+" Enable filetype plugins
+filetype plugin on 
+filetype indent on
+
+" set number of line VIM remembers as history
+set history=500
+
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * checktime
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = "\<space>"
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" :W sudo saves the file
+" (useful for handling the permission-denied error)
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 
 " Search down into subfolders
 " Provides tab-completion for all file-related tasks
+" Search recursively downward from CWD; provides TAB completion for filenames
+" e.g., `:find vim* <TAB>`
 set path+=**
 
 " Display all matching files when we tab complete
 set wildmenu
 
-let mapleader = "\<space>"
 set encoding=utf-8
 syntax enable
 
@@ -33,7 +66,6 @@ set ruler
 set cmdheight=1
 set wildmenu
 
-set autoread
 " Delete characters outside of insert area
 set backspace=indent,eol,start
 set display+=lastline
@@ -81,8 +113,6 @@ endtry
 " turn on italics for comments
 highlight Comment cterm=italic gui=italic
 
-" set number of line VIM remembers as history
-set history=500
 
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
