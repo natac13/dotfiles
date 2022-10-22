@@ -77,7 +77,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 
 " https://github.com/preservim/nerdtree
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', Cond(!has('node'), { 'on':  'NERDTreeToggle' })
 Plug 'ryanoasis/vim-devicons'
 
 Plug 'justinmk/vim-sneak'
@@ -95,7 +95,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Nvim only Plugins
-Plug 'neoclide/coc.nvim', Cond(has('nvim') && has('node'), { 'branch': 'release' })
+Plug 'neoclide/coc.nvim', Cond(has('node'), { 'branch': 'release' })
 
 " Initialize plugin system
 call plug#end()
