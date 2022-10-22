@@ -13,7 +13,7 @@ function doing() {
   printf "\\033[33m ➜ DOING\\033[0m $1...\\n"
 }
 
-#To be able to use add-apt-repository you may need to install software-properties-common:
+# To be able to use add-apt-repository you may need to install software-properties-common:
 sudo apt install -y \
   software-properties-common
 
@@ -51,6 +51,8 @@ sudo apt-get install -y \
 # g++ \ # included with build-essentials
 # gcc \ # included with build-essentials
 
+success 'Debian packages installed'
+
 if [ ! -d "$HOME/bin" ]; then
   mkdir -p "$HOME/bin"
 fi
@@ -58,30 +60,49 @@ fi
 # if there are errors with Chokidar and watching file limit; run the following
 # echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
+################################################################
+# Install git prompt & git completion
+################################################################
 doing "Downloading git-prompt and git-completions for bash"
-cd $HOME
-wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -O "$HOME/.git-prompt.sh"
-wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O "$HOME/.git-completion.bash"
-success
+
+curl -fLo "$HOME/.git-prompt.sh" --create-dirs https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+curl -fLo "$HOME/.git-completion.bash" --create-dirs https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+
+success 'Installed git-prompt and git-completion for bash'
 
 # define dotfile locaiton
 DOTFILES_DIR="$HOME/.dotfiles"
 # if [ ! -d "$DOTFILES_DIR" ]; then
 #   doing "Create and clone dotfile directory"
-#   # git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES_DIR"
+#   git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES_DIR"
 #   success
 # fi
 
-ln -fs /workspace/nvim/.vimrc $HOME/.vimrc
+################################################################
+# Handle vim / neovim setup
+################################################################
+doing "Setup vim and nvim configuration and install vim-plug"
+if test $(which nvim); then
+  # link configuration to ~/.config/nvim/init.vim
+  ln -fs /workspace/nvim/.vimrc $HOME/.config/nvim/init.vim
+  # ln -fs $DOTFILES_DIR/nvim/.vimrc $HOME/.config/nvim/init.vim
 
-# Download vim-plug
-# neovim
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-# vim
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  # Download vim-plug for nvim
+  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+fi
+
+if test $(which vim); then
+  # link configuration to ~/.vimrc
+  ln -fs /workspace/nvim/.vimrc $HOME/.vimrc
+  # ln -fs $DOTFILES_DIR/nvim/.vimrc $HOME/.vimrc
+
+  # Download vim-plug for vim
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
 
 echo '==========================================================================='
-echo "Done! You can now rm ~/intall.sh, and there is a copy in ~/projects/dotfiles for reference if you're interested. Please read the README to see further details. Enjoy..."
+success "Done! You can now rm ~/intall.sh, and there is a copy in ~/projects/dotfiles for reference if you're interested. Please read the README to see further details. Enjoy..."
 echo '==========================================================================='

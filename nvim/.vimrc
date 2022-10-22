@@ -6,6 +6,7 @@
 " This configuration can be shared between vim and neovim
 "
 " Sections:
+"    -> Plugins - Vim Plug
 "    -> General
 "    -> VIM user interface
 "    -> Colors and Fonts
@@ -21,7 +22,83 @@
 "    -> Helper functions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vim-Plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Install vim-plug if not found
+" if has('nvim')
+"     if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+"     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+"         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"     endif
+" else
+"     if empty(glob('~/.vim/autoload/plug.vim'))
+"     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+"         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"     endif
+" endif
 
+" Function to improve the readability for conditionally loading plugins
+" @usage Plug 'pluginGitHub/reponame', Cond(has('nvim')) || Plug 'pluginGitHub/reponame', Cond(has('nvim'), { 'on': 'Neomake' })
+function! Cond(cond, ...)
+  let opts = get(a:000, 0, {})
+  return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-plug
+" https://github.com/junegunn/vim-plug
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.local/share/nvim/plugged')
+" Color Scheme
+Plug 'sainnhe/gruvbox-material'
+
+" https://github.com/sheerun/vim-polyglot
+Plug 'sheerun/vim-polyglot'
+
+" Plug 'leafgarland/typescript-vim'
+
+" https://github.com/tpope/vim-fugitive
+Plug 'tpope/vim-fugitive'
+
+" https://github.com/itchyny/lightline.vim
+ Plug 'itchyny/lightline.vim'
+" Plug 'vim-airline/vim-airline'
+
+" https://github.com/tpope/vim-commentary
+Plug 'tpope/vim-commentary'
+" Plug 'tomtom/tcomment_vim'
+
+" https://github.com/tpope/vim-surround
+Plug 'tpope/vim-surround'
+
+" https://github.com/preservim/nerdtree
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'ryanoasis/vim-devicons'
+
+Plug 'justinmk/vim-sneak'
+
+Plug 'airblade/vim-gitgutter'
+
+" https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+
+" Respect Editor config dotfile
+Plug 'editorconfig/editorconfig-vim'
+
+" Plugin outside ~/.vim/plugged with post-update hook
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Nvim only Plugins
+Plug 'neoclide/coc.nvim', Cond(has('nvim') && has('node'), { 'branch': 'release' })
+
+" Initialize plugin system
+call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -143,6 +220,14 @@ set foldcolumn=1
 set showmode
 set showcmd
 
+" Use mouse in normal and visual mode only
+" a = all
+" n = normal
+" v = visual
+" i = insert
+set mouse=nv
+
+
 " show invisible characters
 " set list
 " set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
@@ -158,8 +243,7 @@ set showcmd
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" turn on italics for comments
-highlight Comment cterm=italic gui=italic
+set background=dark
 
 " Enable syntax highlighting
 syntax enable
@@ -172,38 +256,56 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    " Important!!
-    if has('termguicolors')
-        set termguicolors
-    endif
+" fix color in tumx
+if exists('+termguicolors')
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
+if has('nvim')
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
+
+" Important!!
+if has('termguicolors')
+    set termguicolors
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Gruvbox Material & vim-polyglot (yats)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+try
     " Set contrast.
     " This configuration option should be placed before `colorscheme gruvbox-material`.
     " Available values: 'hard', 'medium'(default), 'soft'
-    let g:gruvbox_material_background = 'hard'
+    let g:gruvbox_material_background = 'medium'
     " For better performance
     let g:gruvbox_material_better_performance = 1
-    colorscheme gruvbox-material
+    let g:gruvbox_material_enable_italic = 1
+    let g:gruvbox_material_enable_bold = 1
 
+    " set the colorscheme
+    colorscheme gruvbox-material
     " set the airline theme to the same colorscheme
-    let g:airline_theme = 'gruvbox_material'
-    " packadd! gruvbox-material
+    " let g:airline_theme = 'gruvbox_material'
+    
+    " Fix the syntax highlighting for variable destructuring
+    highlight link typescriptDestructureVariable Identifier
 catch
     colorscheme desert
 endtry
 
-set background=dark
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn backup off, since most stuff is in SVN, git etc. anyway...
 set nobackup
 set nowb
@@ -429,66 +531,7 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-plug
-" https://github.com/junegunn/vim-plug
-" Specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.local/share/nvim/plugged')
-
-" Color Scheme
-Plug 'sainnhe/gruvbox-material'
-
-" Syntax highlighting
-Plug 'sheerun/vim-polyglot'
-
-" Task bar
-Plug 'vim-airline/vim-airline'
-
-Plug 'tpope/vim-fugitive'
-
-" https://github.com/itchyny/lightline.vim
-" Plug 'itchyny/lightline.vim'
-
-" https://github.com/tpope/vim-commentary
-Plug 'tpope/vim-commentary'
-" Plug 'tomtom/tcomment_vim'
-
-" https://github.com/tpope/vim-surround
-Plug 'tpope/vim-surround'
-
-" On-demand loading
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
-
-Plug 'justinmk/vim-sneak'
-
-Plug 'airblade/vim-gitgutter'
-
-" https://github.com/tpope/vim-vinegar
-" Plug 'tpope/vim-vinegar'
-
-" https://github.com/APZelos/blamer.nvim
-" Plug 'APZelos/blamer.nvim'
-
-" https://github.com/fenetikm/falcon/wiki/Installation
-" Plug 'fenetikm/falcon'
-
-" https://github.com/macguirerintoul/night_owl_light.vim
-" Plug 'macguirerintoul/night_owl_light.vim'
-
-" Initialize plugin system
-call plug#end()
-
-
-if !has('nvim')
-    " set ttymouse=xterm2
-endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugins
+" => NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>n :NERDTreeFocus<CR>
 " nnoremap <C-n> :NERDTree<CR>
@@ -503,3 +546,109 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in
 " Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  Lightline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " \   'left': [ [ 'mode', 'paste' ],
+  " \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+let g:lightline = {
+  \ 'colorscheme': 'gruvbox_material',
+  \ 'active': {
+  \   'left': [ [ 'paste' ],
+  \             [ 'readonly', 'filename', 'modified' ] ],
+  \   'right': [ [ 'percent', 'cocstatus' ],
+  \              [ 'lineinfo' ],
+  \              [ 'currentfunction', 'filetype' ] ]
+  \ },
+  \ 'component_function': {
+  \   'gitbranch': 'FugitiveHead',
+  \   'cocstatus': 'coc#status',
+  \   'currentfunction': 'CocCurrentFunction',
+  \   'fileformat': 'LightlineFileformat',
+  \   'filetype': 'LightlineFiletype',
+  \   'filename': 'LightLineFilename'
+  \ },
+  \ 'tab': {
+  \   'active': [ 'tabnum', 'filename', 'modified'],
+  \   'inactive': [' tabnum', 'filename', 'modified']
+  \ },
+  \ }
+
+function! LightLineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+	let name = ""
+  let path = expand('%')
+
+  if path[:len(root)-1] ==# root
+    let subs = split(path[len(root)+1:], '/')
+  else
+    let subs = split(path, '/')
+  endif
+
+	let i = 1
+	for s in subs
+		let parent = name
+		if  i == len(subs)
+			let name = parent . '/' . s
+    elseif i+1 == len(subs)
+			let name = parent . '/' . s
+		else
+			let name = parent . '/' . strpart(s, 0, 3)
+		endif
+		let i += 1
+	endfor
+
+  return name
+endfunction
+
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ariline (statusbar)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#hunks#enabled=0
+" let g:airline#extensions#branch#enabled=1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <C-p> :Files<cr>
+nnoremap <Leader>b :Buffers<cr>
+nnoremap <Leader>s :BLines<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Editor Config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" To ensure that this plugin works well with Tim Pope's fugitive AND;
+" If you wanted to avoid loading EditorConfig for any remote files over ssh
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
+" Disable editor config on gitcommit messages
+au FileType gitcommit let b:EditorConfig_disable = 1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" EasyAlign
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""
+" Yats.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""
+set re=0 " docs says this helps with performance
