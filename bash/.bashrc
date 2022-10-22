@@ -105,11 +105,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
-fi
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 xterm-color) color_prompt=yes ;;
@@ -134,35 +129,37 @@ if [ -n "$force_color_prompt" ]; then
   fi
 fi
 
-if [ =f $HOME/.git-prompt.sh ]; then
-  source ~/.git-prompt.sh
-  GIT_PS1_SHOWDIRTYSTATE='true'
-  GIT_PS1_SHOWUPSTREAM="auto"
-  # with date
-  # CUSTOM_PROMPT="\[$Cyan\]|\d - \A|\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
-  # without date
-  function makePrompt() {
-    if [ $UID -eq 0 ]; then
-      # root user
-      UC="${BPurple}"
-    else
-      UC="${Green}"
-    fi
-    if [ "$?" -eq "0" ]; then
-      # success / normal prompt
-      CC="${IBlue}"
-    else
-      CC="${BRed}"
-      # last command has failed - error prompt
-    fi
-    CUSTOM_PROMPT="\[$Yellow\][\A]\[$UC\][\u] \[$White\]\w\\n\[$CC\][!\!]\[$ICyan\]\$(__git_ps1)\[$Color_Off\]$ "
-    export PS1=$CUSTOM_PROMPT
-  }
+function makePrompt() {
+  if [ $UID -eq 0 ]; then
+    # root user
+    UC="${BPurple}"
+  else
+    UC="${Green}"
+  fi
+  if [ "$?" -eq "0" ]; then
+    # success / normal prompt
+    CC="${Cyan}"
+  else
+    # last command has failed - error prompt
+    CC="${BRed}"
+  fi
+
+  # if git-prompt.sh is installed
+  if [ -f $HOME/.git-prompt.sh ]; then
+    source ~/.git-prompt.sh
+    GIT_PS1_SHOWDIRTYSTATE='true'
+    GIT_PS1_SHOWUPSTREAM="auto"
+    PS1="${UC}[\u@\h]${White}:${CC}\w${ICyan}$(__git_ps1)${Color_Off}$ "
+  else
+    PS1="${UC}[\u@\h]${White}:${CC}\w${ICyan}${Color_Off}$ "
+  fi
+}
+
+# with color_prompt enabled
+if [ "$color_prompt" = yes ]; then
   export PROMPT_COMMAND=makePrompt
-elif [ "$color_prompt" = yes ]; then
-  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+  PS1='\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
