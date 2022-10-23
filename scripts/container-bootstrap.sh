@@ -72,12 +72,12 @@ curl -fLo "$HOME/.git-completion.bash" --create-dirs https://raw.githubuserconte
 success 'Installed git-prompt and git-completion for bash'
 
 # define dotfile locaiton
-DOTFILES_DIR="$HOME/.dotfiles"
-# if [ ! -d "$DOTFILES_DIR" ]; then
-#   doing "Create and clone dotfile directory"
-#   git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES_DIR"
-#   success
-# fi
+DOTFILES="$HOME/.dotfiles"
+if [ ! -d "$DOTFILES" ]; then
+  doing "Create and clone dotfile directory"
+  git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES"
+  success
+fi
 
 ################################################################
 # Handle vim / neovim setup
@@ -85,22 +85,34 @@ DOTFILES_DIR="$HOME/.dotfiles"
 doing "Setup vim and nvim configuration and install vim-plug"
 if test $(which nvim); then
   # link configuration to ~/.config/nvim/init.vim
-  ln -fs /workspace/nvim/.vimrc $HOME/.config/nvim/init.vim
-  # ln -fs $DOTFILES_DIR/nvim/.vimrc $HOME/.config/nvim/init.vim
+  if [ -f $DOTFILES/nvim/.vimrc ]; then
+    ln -fs $DOTFILES/nvim/.vimrc $HOME/.config/nvim/init.vim
+  fi
 
   # Download vim-plug for nvim
-  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  if [ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]; then
+
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+          https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  fi
 fi
 
 if test $(which vim); then
   # link configuration to ~/.vimrc
-  ln -fs /workspace/nvim/.vimrc $HOME/.vimrc
-  # ln -fs $DOTFILES_DIR/nvim/.vimrc $HOME/.vimrc
+  if [ -f $DOTFILES/nvim/.vimrc ]; then
+    ln -fs $DOTFILES/nvim/.vimrc $HOME/.vimrc
+  fi
 
   # Download vim-plug for vim
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  if [ ! -f $HOME/.vim/autoload/plug.vim ]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  fi
+fi
+
+if [ -f "$DOTFILES/bash/.bashrc"]; then
+  ln -fs $DOTFILES/bash/.bashrc $HOME/.bashrc
+  source $HOME/.bashrc
 fi
 
 echo '==========================================================================='
