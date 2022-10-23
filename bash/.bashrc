@@ -91,6 +91,20 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+#############################
+## Warn about root shells! ##
+#############################
+
+if [ $(id -u) -eq 0 ]; then
+  start="\033[1;37;41m"
+  end="\033[0m"
+  printf "\n"
+  printf "  $start                                                                       $end\n"
+  printf "  $start  WARNING: You are in a root shell. This is probably a very bad idea.  $end\n"
+  printf "  $start                                                                       $end\n"
+  printf "\n"
+fi
+
 ##################################################
 # bashrc defaults
 ##################################################
@@ -104,6 +118,11 @@ shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+  debian_chroot="[$(cat /etc/debian_chroot)]"
+fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -144,14 +163,13 @@ function makePrompt() {
     CC="${BRed}"
   fi
 
-  # if git-prompt.sh is installed
   if [ -f $HOME/.git-prompt.sh ]; then
     source ~/.git-prompt.sh
     GIT_PS1_SHOWDIRTYSTATE='true'
     GIT_PS1_SHOWUPSTREAM="auto"
-    PS1="${UC}[\u@\h]${White}:${CC}\w${ICyan}$(__git_ps1)${Color_Off}$ "
+    PS1="${Yellow}${debian_chroot:+($debian_chroot)}${UC}[\u@\h]${White}:${CC}\w${ICyan}$(__git_ps1)${Color_Off}$ "
   else
-    PS1="${UC}[\u@\h]${White}:${CC}\w${ICyan}${Color_Off}$ "
+    PS1="${Yellow}${debian_chroot:+($debian_chroot)}${UC}[\u@\h]${White}:${CC}\w${ICyan}${Color_Off}$ "
   fi
 }
 
@@ -159,7 +177,7 @@ function makePrompt() {
 if [ "$color_prompt" = yes ]; then
   export PROMPT_COMMAND=makePrompt
 else
-  PS1='\u@\h:\w\$ '
+  PS1="${debian_chroot:+($debian_chroot)}[\u@\h]:\w\$ "
 fi
 unset color_prompt force_color_prompt
 
