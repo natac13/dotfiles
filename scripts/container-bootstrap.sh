@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function success() {
   printf "\\033[32m ✔ SUCCESS\\033[0m $1\\n"
@@ -6,7 +6,6 @@ function success() {
 
 function fail() {
   printf "\\n\\033[31m ✖ FAIL\\033[0m $1\\n"
-  exit 1
 }
 
 function doing() {
@@ -36,8 +35,6 @@ sudo apt-get install -y \
   dirmngr \
   gpg \
   git \
-  vim \
-  neovim \
   neofetch \
   openssh-client \
   automake \
@@ -50,6 +47,11 @@ sudo apt-get install -y \
 # make \ # included with build-essentials
 # g++ \ # included with build-essentials
 # gcc \ # included with build-essentials
+
+sudo apt install -y \
+  vim
+sudo apt install -y \
+  neovim
 
 success 'Debian packages installed'
 
@@ -72,11 +74,12 @@ curl -fLo "$HOME/.git-completion.bash" --create-dirs https://raw.githubuserconte
 success 'Installed git-prompt and git-completion for bash'
 
 # define dotfile locaiton
-DOTFILES="$HOME/.dotfiles"
+export DOTFILES="$HOME/.dotfiles"
 if [ ! -d "$DOTFILES" ]; then
   doing "Create and clone dotfile directory"
-  git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES"
-  success
+  cp -r /workspace $DOTFILES
+  # git clone --branch better-install-process -q https://github.com/natac13/dotfiles.git "$DOTFILES"
+  success "Created dotfiles directory $DOTFILES"
 fi
 
 ################################################################
@@ -86,35 +89,69 @@ doing "Setup vim and nvim configuration and install vim-plug"
 if test $(which nvim); then
   # link configuration to ~/.config/nvim/init.vim
   if [ -f $DOTFILES/nvim/.vimrc ]; then
+    doing "Link .config/nvim/init.vim file"
+    if [ ! -d $HOME/.config/nvim/ ]; then
+      mkdir -p $HOME/.config/nvim
+    fi
     ln -fs $DOTFILES/nvim/.vimrc $HOME/.config/nvim/init.vim
+  else
+    fail "Missing $DOTFILES/nvim/.vimrc"
   fi
 
   # Download vim-plug for nvim
   if [ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]; then
 
+    doing "Install vim plug for nvim"
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   fi
+
+else
+  fail "Missing nvim command"
 fi
 
 if test $(which vim); then
   # link configuration to ~/.vimrc
   if [ -f $DOTFILES/nvim/.vimrc ]; then
+    doing "Link .vimrc file"
     ln -fs $DOTFILES/nvim/.vimrc $HOME/.vimrc
+  else
+    fail "Missing $DOTFILES/nvim/.vimrc"
   fi
 
   # Download vim-plug for vim
   if [ ! -f $HOME/.vim/autoload/plug.vim ]; then
+    doing "Install vim plug for vim"
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    doing "Install vim plugins"
+    vim -es -u ~/.vimrc -i NONE -c "PlugInstall" -c "qa"
+    success "Installed vim plug and plugins"
   fi
+else
+  fail "Missing vim command"
 fi
 
-if [ -f "$DOTFILES/bash/.bashrc"]; then
+if [ -f "$DOTFILES/bash/.bashrc" ]; then
+  doing "Link .bashrc file"
   ln -fs $DOTFILES/bash/.bashrc $HOME/.bashrc
-  source $HOME/.bashrc
+fi
+
+if ! test $(which node); then
+  # download nvm package
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+
+  # load nvm
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+  # install latest node lts
+  nvm install --lts
+
+  npm install -g neovim
 fi
 
 echo '==========================================================================='
-success "Done! You can now rm ~/intall.sh, and there is a copy in ~/projects/dotfiles for reference if you're interested. Please read the README to see further details. Enjoy..."
+success "Done! Run source ~/.profile or ~/.bashrc to reload your shell"
 echo '==========================================================================='
