@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  dotfiles:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - USERNAME=natac
+    working_dir: /workspace
+    user: natac
+    volumes:
+      - .:/workspace
+    command: /bin/sh -c "while sleep 1000; do :; done"

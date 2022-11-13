@@ -4,8 +4,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-*i*) ;;
-*) return ;;
+    *i*) ;;
+      *) return;;
 esac
 
 # failing glob expands to nothing, rather than itself
@@ -14,7 +14,9 @@ shopt -s nullglob
 ##################################################
 # Dotfiles repo variable
 ##################################################
-export DOTFILES="$HOME/.dotfiles"
+# if [ -z "$DOTFILES" ]; then
+export DOTFILES="$HOME/projects/dotfiles"
+# fi
 
 ##################################################
 # Color variables
@@ -23,17 +25,17 @@ if [ -f "${DOTFILES}/bash/colors.sh" ]; then
   source "${DOTFILES}/bash/colors.sh"
 fi
 
+
 #######################################################
 # PATH
 #######################################################
-# Create bim directories if they do not exist
-if [ ! -d "$HOME/bin" ]; then
+if [ ! -d "$HOME/bin" ] ; then
   mkdir "$HOME/bin"
 fi
-if [ ! -d "$HOME/.local/bin" ]; then
+
+if [ ! -d "$HOME/.local/bin" ] ; then
   mkdir "$HOME/.local/bin"
 fi
-
 # set PATH so it includes user's private bin if it exists
 # This is where you put your hand rolled scripts (remember to chmod them)
 export PATH="$HOME/bin:$PATH"
@@ -45,8 +47,9 @@ export PATH="$HOME/npm-global/bin:$PATH"
 # Utilities functions
 ##################################################
 LIB="${DOTFILES}/bash/lib/"
-for lib_file in "$LIB"/*.sh; do
-  source "$lib_file"
+for _bash_lib_file in "$LIB"/*.sh
+do
+  source "$_bash_lib_file"
 done
 
 ##################################################
@@ -55,23 +58,25 @@ done
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  elif [ -f /etc/profile.d/bash_completion.sh ]; then
-    . /etc/profile.d/bash_completion.sh
-  fi
-fi
+ if ! shopt -oq posix; then
+   if [ -f /usr/share/bash-completion/bash_completion ]; then
+     . /usr/share/bash-completion/bash_completion
+   elif [ -f /etc/bash_completion ]; then
+     . /etc/bash_completion
+   elif [ -f /etc/profile.d/bash_completion.sh ]; then
+     . /etc/profile.d/bash_completion.sh
+   fi
+ fi
 
 ALIAS_DIR="${DOTFILES}/bash/aliases/"
-for alias_file in "$ALIAS_DIR"/*.sh; do
+for alias_file in "$ALIAS_DIR"/*.sh
+do
   source "$alias_file"
 done
 
 COMPLETIONS_DIR="${DOTFILES}/bash/completions/"
-for completion_file in "$COMPLETIONS_DIR"/*.sh; do
+for completion_file in "$COMPLETIONS_DIR"/*.sh
+do
   source "$completion_file"
 done
 
@@ -91,19 +96,6 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-#############################
-## Warn about root shells! ##
-#############################
-
-if [ $(id -u) -eq 0 ]; then
-  start="\033[1;37;41m"
-  end="\033[0m"
-  printf "\n"
-  printf "  $start                                                                       $end\n"
-  printf "  $start  WARNING: You are in a root shell. This is probably a very bad idea.  $end\n"
-  printf "  $start                                                                       $end\n"
-  printf "\n"
-fi
 
 ##################################################
 # bashrc defaults
@@ -120,34 +112,73 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot="[$(cat /etc/debian_chroot)]"
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-xterm-color) color_prompt=yes ;;
+    xterm-color) color_prompt=yes;;
 esac
 
-#######################################################
-# Command Prompt
-#######################################################
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
-  else
-    color_prompt=
-  fi
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
 fi
 
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/__tabtab.bash ] && . ~/.config/tabtab/__tabtab.bash || true
+
+#######################################################
+# Custom bash prompt
+#######################################################
+source ~/.git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE='true'
+GIT_PS1_SHOWUPSTREAM="auto"
+# with date
+# CUSTOM_PROMPT="\[$Cyan\]|\d - \A|\[$Green\][\u]\[$White\]\w\[$IBlue\]\$(__git_ps1)\[$Color_Off\] $"
+# without date
 function makePrompt() {
   if [ $UID -eq 0 ]; then
     # root user
@@ -157,60 +188,28 @@ function makePrompt() {
   fi
   if [ "$?" -eq "0" ]; then
     # success / normal prompt
-    CC="${Cyan}"
+    CC="${IBlue}"
   else
-    # last command has failed - error prompt
     CC="${BRed}"
+    # last command has failed - error prompt
   fi
-
-  if [ -f $HOME/.git-prompt.sh ]; then
-    source ~/.git-prompt.sh
-    GIT_PS1_SHOWDIRTYSTATE='true'
-    GIT_PS1_SHOWUPSTREAM="auto"
-    PS1="${Yellow}${debian_chroot:+($debian_chroot)}${UC}[\u@\h]${White}:${CC}\w${ICyan}$(__git_ps1)${Color_Off}$ "
-  else
-    PS1="${Yellow}${debian_chroot:+($debian_chroot)}${UC}[\u@\h]${White}:${CC}\w${ICyan}${Color_Off}$ "
-  fi
+  CUSTOM_PROMPT="\[$Yellow\][\A]\[$UC\][\u] \[$White\]\w\\n\[$CC\][!\!]\[$ICyan\]\$(__git_ps1)\[$Color_Off\]$ "
+  export PS1=$CUSTOM_PROMPT
 }
-
-# with color_prompt enabled
-if [ "$color_prompt" = yes ]; then
-  export PROMPT_COMMAND=makePrompt
-else
-  PS1="${debian_chroot:+($debian_chroot)}[\u@\h]:\w\$ "
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm* | rxvt*)
-  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-  ;;
-*) ;;
-
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'
-  alias dir='dir --color=auto'
-  alias vdir='vdir --color=auto'
-
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-fi
-
-# tabtab source for packages
-# uninstall by removing these lines
-[ -f ~/.config/tabtab/__tabtab.bash ] && . ~/.config/tabtab/__tabtab.bash || true
-
+export PROMPT_COMMAND=makePrompt
+# Download a custom terminfo that defines sitm and ritm
+# wget https://gist.githubusercontent.com/sos4nt/3187620/raw/8e13c1fec5b72d415ed2917590348451de5f8e58/xterm-256color-italic.terminfo
+# Compile it
+# tic xterm-256color-italic.terminfo
+# Activate xterm-256color-italic.terminfo automatically
+#export TERM=xterm-256color
+#export TERM=xterm-256color-italic
+eval "$(/home/natac/.linuxbrew/bin/brew shellenv)"
 #######################################################
 # Editor
 #######################################################
 
-if test $(which nvim); then
+if [ -x /usr/bin/nvim ]; then
   export EDITOR=nvim
   export VISUAL=nvim
 else

@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/natac/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -72,21 +72,22 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+fpath+="${ZSH_CUSTOM:-"$ZSH/custom"}/plugins/zsh-completions/src"
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws brew composer common-aliases docker docker-compose encode64 extract gatsby gh git gitignore git-flow history iterm2 macos node npm nvm redis-cli tmux tldr tools vscode yarn wp-cli zsh-completions zsh-vi-mode)
+plugins=(aws brew composer common-aliases docker docker-compose encode64 extract gatsby gh git gitignore git-flow history iterm2 macos node npm nvm redis-cli tmux tldr tools vscode yarn wp-cli zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export PATH="/usr/local/bin:$PATH"
-export PATH="Users/natac/.composer/vender/bin:$PATH"
+export PATH="$HOME/.composer/vender/bin:$PATH"
 
 # for Solana install
-export PATH="/Users/natac/.local/share/solana/install/active_release/bin:$PATH"
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 # ZSH VI mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
@@ -111,7 +112,7 @@ zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
 # Editor
 #######################################################
 
-if [ -x /usr/local/bin/nvim ]; then
+if [ -x $(which nvim) ]; then
   export EDITOR=nvim
   export VISUAL=nvim
 else

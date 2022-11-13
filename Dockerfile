@@ -1,41 +1,28 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.10
 
-RUN apt-get update && \
-  apt-get install -y software-properties-common && \
-  add-apt-repository ppa:neovim-ppa/stable && \
-  apt-get -y update && \
-  apt-get -y upgrade && \
-  apt-get -y install \
-  sudo \
-  ca-certificates \
-  curl \
-  wget \
-  dirmngr \
-  gpg \
-  git \
-  vim \
-  neovim \
-  tmux \
-  # fzf \
-  # ripgrep \
-  tldr \
-  nnn \
-  neofetch \
-  openssh-client \
-  automake \
-  make \
-  unzip \
-  g++ \
-  gcc \
-  jq
+ARG USERNAME=natac
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
-  apt-get -y install nodejs && \
-  ln -s /usr/bin/nodejs /usr/local/bin/node
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+  && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+  #
+  # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+  && apt-get update \
+  && apt-get install -y sudo \
+  && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+  && chmod 0440 /etc/sudoers.d/$USERNAME
 
-COPY . /home/root/src
+# ********************************************************
+# * Anything else you want to do like clean up goes here *
+# ********************************************************
 
-WORKDIR  /home/root/src
+# [Optional] Set the default user. Omit if you want to keep the default as root.
+USER $USERNAME
+
+
+WORKDIR  /workspace
 
 # RUN "bash ./install.sh"
 
