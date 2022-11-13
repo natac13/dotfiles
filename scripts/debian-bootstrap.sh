@@ -43,6 +43,8 @@ sudo apt-get install -y \
   jq \
   xclip \
   nnn \
+  tmux \
+  bat \
   bash-completion
 # make \ # included with build-essentials
 # g++ \ # included with build-essentials
@@ -74,11 +76,11 @@ curl -fLo "$HOME/.git-completion.bash" --create-dirs https://raw.githubuserconte
 success 'Installed git-prompt and git-completion for bash'
 
 # define dotfile locaiton
-export DOTFILES="$HOME/.dotfiles"
+# export DOTFILES="$HOME/.dotfiles"
+export DOTFILES="/workspace"
 if [ ! -d "$DOTFILES" ]; then
   doing "Create and clone dotfile directory"
-  cp -r /workspace $DOTFILES
-  # git clone --branch better-install-process -q https://github.com/natac13/dotfiles.git "$DOTFILES"
+  # git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES"
   success "Created dotfiles directory $DOTFILES"
 fi
 
@@ -87,15 +89,20 @@ fi
 ################################################################
 doing "Setup vim and nvim configuration and install vim-plug"
 if test $(which nvim); then
+  # create nvim config directory if it does not exist
+  if [ ! -d $HOME/.config/nvim/ ]; then
+    mkdir -p $HOME/.config/nvim
+  fi
+
   # link configuration to ~/.config/nvim/init.vim
   if [ -f $DOTFILES/nvim/.vimrc ]; then
     doing "Link .config/nvim/init.vim file"
-    if [ ! -d $HOME/.config/nvim/ ]; then
-      mkdir -p $HOME/.config/nvim
-    fi
     ln -fs $DOTFILES/nvim/.vimrc $HOME/.config/nvim/init.vim
-  else
-    fail "Missing $DOTFILES/nvim/.vimrc"
+  fi
+
+  # link coc-settings.json if it exist
+  if [ -f $DOTFILES/nvim/coc-settings.json ]; then
+    ln -fs $DOTFILES/nvim/coc-settings.json $HOME/.config/nvim/coc-settings.json
   fi
 
   # Download vim-plug for nvim
@@ -105,7 +112,6 @@ if test $(which nvim); then
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   fi
-
 else
   fail "Missing nvim command"
 fi
@@ -115,8 +121,6 @@ if test $(which vim); then
   if [ -f $DOTFILES/nvim/.vimrc ]; then
     doing "Link .vimrc file"
     ln -fs $DOTFILES/nvim/.vimrc $HOME/.vimrc
-  else
-    fail "Missing $DOTFILES/nvim/.vimrc"
   fi
 
   # Download vim-plug for vim
@@ -133,12 +137,24 @@ else
   fail "Missing vim command"
 fi
 
+# link tmux config
+if test $(which tmux); then
+  # link configuration to ~/.vimrc
+  if [ -f $DOTFILES/tmux/.tmux.conf ]; then
+    doing "Link .tmux.conf file"
+    ln -fs "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
+  fi
+else
+  fail "Missing tmux command"
+fi
+
 if [ -f "$DOTFILES/bash/.bashrc" ]; then
   doing "Link .bashrc file"
-  ln -fs $DOTFILES/bash/.bashrc $HOME/.bashrc
+  ln -fs "$DOTFILES/bash/.bashrc" "$HOME/.bashrc"
 fi
 
 if ! test $(which node); then
+  doing "Installing nvm and latest node lts"
   # download nvm package
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
@@ -149,7 +165,13 @@ if ! test $(which node); then
   # install latest node lts
   nvm install --lts
 
+  # install neovim package needed for nvim coc
   npm install -g neovim
+fi
+
+if [ -f $DOTFILES/git/.gitconfig ]; then
+  doing "Link git config file"
+  ln -fs $DOTFILES/git/.gitconfig $HOME/.gitconfig
 fi
 
 echo '==========================================================================='
