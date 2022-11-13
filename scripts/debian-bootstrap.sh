@@ -76,11 +76,10 @@ curl -fLo "$HOME/.git-completion.bash" --create-dirs https://raw.githubuserconte
 success 'Installed git-prompt and git-completion for bash'
 
 # define dotfile locaiton
-# export DOTFILES="$HOME/.dotfiles"
-export DOTFILES="/workspace"
+export DOTFILES="$HOME/.dotfiles"
 if [ ! -d "$DOTFILES" ]; then
   doing "Create and clone dotfile directory"
-  # git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES"
+  git clone -q https://github.com/natac13/dotfiles.git "$DOTFILES"
   success "Created dotfiles directory $DOTFILES"
 fi
 
