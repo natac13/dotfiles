@@ -1,99 +1,132 @@
 # Taps
-tap 'homebrew/cask'
-tap 'homebrew/cask-fonts'
-tap 'homebrew/cask-versions'
-tap 'homebrew/bundle'
-# tap 'nicoverbruggen/homebrew-cask'
-# tap 'stripe/stripe-cli'
+tap "aws/tap"
+tap "azure/functions"
 
-# Binaries
-# brew 'awscli'
-brew 'bash' # Latest Bash version
-# brew 'bat' # Used for spatie/visit
-# brew 'coreutils' # Those that come with macOS are outdated
-brew 'ffmpeg'
-brew 'gh'
-brew 'git'
-brew 'grep'
-brew 'neovim'
-brew 'vim'
-# brew 'httpie'
-brew 'jq' # Used for spatie/visit
-# brew 'mackup'
-# brew 'mas' # Mac App Store manager
-brew 'pkg-config' # https://github.com/driesvints/dotfiles/issues/20
-# brew 'stripe/stripe-cli/stripe'
-# brew 'stripe/stripe-mock/stripe-mock'
-# brew 'svn' # Needed to install fonts
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
+tap "homebrew/core"
 
-# Spatie Medialibrary
-# brew 'jpegoptim'
-# brew 'optipng'
-# brew 'pngquant'
-# brew 'svgo'
-# brew 'gifsicle'
+tap "mongodb/brew"
 
 # Development
-brew 'php'
-brew 'php@8.0'
-brew 'php@7.4'
-brew 'composer'
-brew 'imagemagick'
-brew 'meilisearch'
-brew 'mysql'
-brew 'nginx'
-brew 'node'
-brew 'redis'
-brew 'yarn'
+brew "aws/tap/aws-sam-cli"
+brew "awscli"
+brew "azure-cli"
+brew "azure/functions/azure-functions-core-tools@4"
+brew "bash"
+brew "colima"
+brew "gh"
+brew "git-flow"
+brew "git"
+brew "neovim"
+brew "tmux"
+brew "tree"
+brew "vim"
 
-# Apps
-# cask '1password'
-# cask 'caffeine'
-# cask 'dbngin'
-# cask 'discord'
-# cask 'docker'
-# cask 'figma'
-# cask 'firefox'
-# cask 'github'
-# cask 'google-chrome'
-# cask 'helo'
-# cask 'imageoptim'
-# cask 'insomnia'
-# cask 'pastebot'
-# cask 'phpmon'
-# cask 'ray'
-# cask 'screenflow'
-# cask 'slack'
-# cask 'tableplus'
-# cask 'telegram-desktop'
-# cask 'the-unarchiver'
-# cask 'tinkerwell'
-# cask 'transmit'
-# cask 'tunnelbear'
-# cask 'tuple'
-# cask 'visual-studio-code'
-# cask 'whatsapp'
-# cask 'zoom'
+# Node
+brew "node"
+brew "node@14"
+brew "nvm"
 
-# Quicklook
-# cask 'qlmarkdown'
-# cask 'quicklook-json'
+# PHP
+brew "composer"
+brew "php", link: false
+brew "php@7.4", link: true
+
+# Python
+brew "python@3.10"
+brew "python@3.8"
+brew "python@3.9"
+
+# Ruby
+brew "ruby"
+
+# Mongo DB
+brew "mongocli"
+brew "mongodb/brew/mongodb-community-shell"
+brew "mongodb/brew/mongodb-community@4.4"
+brew "mongodb/brew/mongodb-database-tools", link: false
+brew "mongosh"
 
 # Fonts
-# cask 'font-lato'
-# cask 'font-open-sans'
-# cask 'font-roboto'
-# cask 'font-source-code-pro-for-powerline'
-# cask 'font-source-code-pro'
-# cask 'font-source-sans-pro'
-# cask 'font-source-serif-pro'
+cask "font-fira-code-nerd-font"
+cask "font-work-sans"
+cask "font-open-sans"
+cask "font-roboto"
+cask 'font-source-code-pro'
+cask 'font-source-sans-pro'
+cask 'font-source-serif-pro'
 
-# Mac App Store
-# mas 'Byword', id: 420212497
-# mas 'Giphy Capture', id: 668208984
-# mas 'Keynote', id: 409183694
-# mas 'Numbers', id: 409203825
-# mas 'Spark', id: 1176895641
-# mas 'Speedtest', id: 1153157709
-# mas 'Things', id: 904280696
-# mas 'Tweetbot', id: 1384080005
+# Command Line Utils
+brew "bat"
+brew "curl"
+brew "fzf"
+brew "mkcert"
+brew "nnn"
+brew "qt"
+brew "youtube-dl"
+
+# Apps
+cask "alfred"
+cask "app-cleaner"
+cask "brave-browser"
+cask "darktable"
+cask "docker"
+cask "google-chrome"
+cask "iterm2"
+cask "local"
+cask "logitech-control-center"
+cask "logitech-g-hub"
+cask "microsoft-teams"
+cask "mongodb-compass"
+cask "notunes"
+cask "obs"
+cask "postman"
+cask "rectangle"
+cask "sketch"
+cask "slack"
+cask "spotify"
+cask "the-unarchiver"
+cask "visual-studio-code"
+cask "vlc"
+cask "wacom-tablet"
+cask "zoom"
+
+# fun
+brew "cmatrix"
+
+# unknown
+brew "aom"
+brew "freetds"
+brew "gcc"
+brew "gd"
+brew "gdk-pixbuf"
+brew "ghostscript"
+brew "glib"
+brew "gobject-introspection"
+brew "harfbuzz"
+brew "hdf5"
+brew "htop"
+brew "imagemagick"
+brew "jpeg-xl"
+brew "libavif"
+brew "libexif"
+brew "libgsf"
+brew "libheif"
+brew "libmatio"
+brew "libpq"
+brew "librsvg"
+brew "libx11"
+brew "luv"
+brew "mozjpeg"
+brew "nghttp2"
+brew "openldap"
+brew "openslide"
+brew "pango"
+brew "pkg-config"
+brew "poppler"
+brew "rustup-init"
+brew "shared-mime-info"
+brew "webp"

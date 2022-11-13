@@ -94,9 +94,9 @@ if test $(which nvim); then
   fi
 
   # link configuration to ~/.config/nvim/init.vim
-  if [ -f $DOTFILES/nvim/.vimrc ]; then
+  if [ -f $DOTFILES/nvim/init.vim ]; then
     doing "Link .config/nvim/init.vim file"
-    ln -fs $DOTFILES/nvim/.vimrc $HOME/.config/nvim/init.vim
+    ln -fs $DOTFILES/nvim/init.vim $HOME/.config/nvim/init.vim
   fi
 
   # link coc-settings.json if it exist
@@ -117,9 +117,9 @@ fi
 
 if test $(which vim); then
   # link configuration to ~/.vimrc
-  if [ -f $DOTFILES/nvim/.vimrc ]; then
+  if [ -f $DOTFILES/nvim/init.vim ]; then
     doing "Link .vimrc file"
-    ln -fs $DOTFILES/nvim/.vimrc $HOME/.vimrc
+    ln -fs $DOTFILES/nvim/init.vim $HOME/.vimrc
   fi
 
   # Download vim-plug for vim
