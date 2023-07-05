@@ -78,7 +78,38 @@ fpath+="${ZSH_CUSTOM:-"$ZSH/custom"}/plugins/zsh-completions/src"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws brew composer common-aliases docker docker-compose encode64 extract gatsby gh git gitignore git-flow history iterm2 macos node npm nvm redis-cli tmux tldr tools vscode yarn wp-cli zsh-vi-mode)
+plugins=(
+  aws \
+  # zsh-syntax-highlighting \
+  zsh-autosuggestions \
+  brew \
+  composer \
+  common-aliases \
+  docker \
+  docker-compose \
+  dotnet \
+  encode64 \
+  extract \
+  gatsby \
+  gh \
+  golang \
+  git \
+  gitignore \
+  history \
+  iterm2 \
+  macos \
+  node \
+  npm \
+  nvm \
+  rust \
+  tmux \
+  tldr \
+  tools \
+  vscode \
+  yarn \
+  wp-cli \
+  zsh-vi-mode
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -88,6 +119,7 @@ export PATH="$HOME/.composer/vender/bin:$PATH"
 
 # for Solana install
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+export PATH="$HOME/.dotnet/tools:$PATH"
 
 # ZSH VI mode
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
@@ -120,6 +152,26 @@ else
   export VISUAL=vim
 fi
 
+#######################################################
+# Nvims
+#######################################################
+alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
+alias nvim-lunar="NVIM_APPNAME=LunarVim nvim"
+# alias nvim-kick="NVIM_APPNAME=kickstart nvim"
+# alias nvim-chad="NVIM_APPNAME=NvChad nvim"
+# alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
+
+function nvims() {
+  items=("default" "kickstart" "LazyVim" "NvChad" "AstroNvim" "LunarVim")
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  NVIM_APPNAME=$config nvim $@
+}
 
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
@@ -130,6 +182,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias pn="pnpm"
 #
 zstyle ':completion:*:*:git:*' script /usr/local/share/zsh/site-functions/git-completion.bash
 
@@ -148,3 +201,5 @@ export NVM_DIR="$HOME/.nvm"
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 #
+export PATH="/usr/local/opt/php@7.4/bin:$PATH"
+export PATH="/usr/local/opt/php@7.4/sbin:$PATH"

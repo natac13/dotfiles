@@ -7,7 +7,7 @@
 [core]
   editor = nvim
   autocrlf = input
-	ignorecase = false
+  ignorecase = false
 [alias]
   co = checkout
   su = status
