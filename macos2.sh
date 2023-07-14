@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # ~/.macos — https://mths.be/macos
+# Run without downloading:
+# curl https://raw.githubusercontent.com/natac13/dotfiles/HEAD/macos | bash
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
@@ -15,6 +17,81 @@ while true; do
   sleep 60
   kill -0 "$$" || exit
 done 2>/dev/null &
+
+###############################################################################
+# Natac's Customizations                                                       #
+###############################################################################
+
+echo "Hello $(whoami)! Let's get you set up."
+
+echo "mkdir -p ${HOME}/code"
+mkdir -p "${HOME}/code"
+
+echo "installing homebrew"
+# install homebrew https://brew.sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>/Users/natac/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+echo "brew installing stuff"
+# ripgrep: rg is faster than alternatives
+# imagemagick: eventually I will need this for something
+# ffmpeg: eventually I'll need this for something
+# tree: really handy for listing out directories in text
+# bat: A cat(1) clone with syntax highlighting and Git integration.
+# pgcli: postgres CLI
+brew install git ripgrep imagemagick tree bat pgcli ffmpeg bash gh tmux nnn neovim
+
+if [ ! -f ~/.zshrc]; then
+  touch ~/.zshrc
+fi
+
+echo "installing node (via nvm)"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+echo "node --version: $(node --version)"
+echo "npm --version: $(npm --version)"
+
+echo "installing a few global npm packages"
+npm install --global serve fkill-cli semantic-release-cli npm-check-updates tldr
+
+echo "installing minimal cack apps with brew --cask"
+brew install --cask google-chrome brave-browser visual-studio-code spotify slack font-fira-code-nerd-font iterm2 raycast
+
+echo "Generating a new SSH key for GitHub"
+ssh-keygen -t ed25519 -C "sean.campbell13@gmail.com" -f ~/.ssh/github
+eval "$(ssh-agent -s)"
+touch ~/.ssh/config
+echo "Host github.com\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/github\n ForwardAgent yes" | tee ~/.ssh/config
+ssh-add -K ~/.ssh/github
+echo "run 'pbcopy < ~/.ssh/github.pub' and paste that into GitHub"
+
+
+echo "Install Oh My ZSH"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+
+echo "cloning dotfiles"
+git clone git@github.com:natac13/dotfiles.git "${HOME}/.dotfiles"
+ln -s "${HOME}/.dotfiles/zsh/.zshrc" "${HOME}/.zshrc"
+ln -s "${HOME}/.dotfiles/zsh/plugins/tools" "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/tools"
+ln -s "${HOME}/.dotfiles/git/.gitconfig" "${HOME}/.gitconfig"
+ln -s "${HOME}/.dotfiles/git/.gitignore_global" "${HOME}/.gitignore_global"
+ln -s "${HOME}/.dotfiles/tmux/.tmux.conf" "${HOME}/.tmux.conf"
+ln -s "${HOME}/.dotfiles/tldr/.tldrrc" "${HOME}/.tldrrc"
+# ln -s "${HOME}/.dotfiles/.ripgreprc" "${HOME}/.ripgreprc"
+#
+# # get bat and delta all configured
+# mkdir -p "${HOME}/.config/bat/themes"
+# ln -s "${HOME}/dotfiles/.config/bat/config" "${HOME}/.config/bat/config"
+# git clone https://github.com/batpigandme/night-owlish "${HOME}/.config/bat/themes/night-owlish"
+# bat cache --build
+
 
 ###############################################################################
 # General UI/UX                                                               #
@@ -201,7 +278,7 @@ defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Save screenshots to the desktop
-# defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+defaults write com.apple.screencapture location -string "${HOME}/Pictures/screenshots"
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 defaults write com.apple.screencapture type -string "png"

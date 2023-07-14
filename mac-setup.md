@@ -17,3 +17,7 @@ In a new termianl run `brew doctor`
 ## Use `brew install --cask` for applications
 
 `brew install --cask alfred appcleaner docker google-chrome vlc zoom iterm2 etc.`
+
+## Install Rosetta
+
+`softwareupdate --install-rosetta --agree-to-license`

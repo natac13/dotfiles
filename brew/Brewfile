@@ -4,7 +4,6 @@ tap "azure/functions"
 
 tap "homebrew/bundle"
 tap "homebrew/cask"
-tap "homebrew/cask-drivers"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
 
@@ -18,7 +17,6 @@ brew "azure/functions/azure-functions-core-tools@4"
 brew "bash"
 brew "colima"
 brew "gh"
-brew "git-flow"
 brew "git"
 brew "neovim"
 brew "tmux"
@@ -26,8 +24,6 @@ brew "tree"
 brew "vim"
 
 # Node
-brew "node"
-brew "node@14"
 brew "nvm"
 
 # PHP
@@ -36,12 +32,16 @@ brew "php", link: false
 brew "php@7.4", link: true
 
 # Python
-brew "python@3.10"
-brew "python@3.8"
-brew "python@3.9"
+brew "python"
 
 # Ruby
 brew "ruby"
+
+# Rust
+brew "rustup-init"
+
+# Go
+brew "go"
 
 # Mongo DB
 brew "mongocli"
@@ -69,10 +69,8 @@ brew "qt"
 brew "youtube-dl"
 
 # Apps
-cask "alfred"
 cask "app-cleaner"
 cask "brave-browser"
-cask "darktable"
 cask "docker"
 cask "google-chrome"
 cask "iterm2"
@@ -84,7 +82,6 @@ cask "mongodb-compass"
 cask "notunes"
 cask "obs"
 cask "postman"
-cask "rectangle"
 cask "sketch"
 cask "slack"
 cask "spotify"
@@ -94,39 +91,8 @@ cask "vlc"
 cask "wacom-tablet"
 cask "zoom"
 
-# fun
-brew "cmatrix"
-
 # unknown
-brew "aom"
-brew "freetds"
 brew "gcc"
-brew "gd"
-brew "gdk-pixbuf"
-brew "ghostscript"
-brew "glib"
-brew "gobject-introspection"
-brew "harfbuzz"
-brew "hdf5"
 brew "htop"
 brew "imagemagick"
-brew "jpeg-xl"
-brew "libavif"
-brew "libexif"
-brew "libgsf"
-brew "libheif"
-brew "libmatio"
-brew "libpq"
-brew "librsvg"
-brew "libx11"
-brew "luv"
-brew "mozjpeg"
-brew "nghttp2"
-brew "openldap"
-brew "openslide"
-brew "pango"
-brew "pkg-config"
-brew "poppler"
-brew "rustup-init"
-brew "shared-mime-info"
 brew "webp"

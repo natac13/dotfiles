@@ -92,6 +92,28 @@ alias php7.4='{ brew unlink php@7.2; brew unlink php@7.3; brew unlink php@8.0; b
 alias php8.1='{ brew unlink php@7.2; brew unlink php@7.3; brew unlink php@7.4; brew unlink php@8.0; brew link php@8.1 --force --overwrite; } &> /dev/null && php -v'
 
 #####################################################
-# npm 
+# npm & pnpm 
 #####################################################
 alias nrd="npm run dev"
+alias pn="pnpm"
+
+#######################################################
+# Nvims
+#######################################################
+alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
+alias nvim-lunar="NVIM_APPNAME=LunarVim nvim"
+# alias nvim-kick="NVIM_APPNAME=kickstart nvim"
+# alias nvim-chad="NVIM_APPNAME=NvChad nvim"
+# alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
+
+function nvims() {
+  items=("default" "kickstart" "LazyVim" "NvChad" "AstroNvim" "LunarVim")
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  NVIM_APPNAME=$config nvim $@
+}

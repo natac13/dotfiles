@@ -103,22 +103,24 @@ plugins=(
   nvm \
   rust \
   tmux \
-  tldr \
+  # tldr \
   tools \
   vscode \
   yarn \
   wp-cli \
-  zsh-vi-mode
+  vi-mode
+  # zsh-vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export PATH="/usr/local/bin:$PATH"
+
+# PHP Composer
 export PATH="$HOME/.composer/vender/bin:$PATH"
 
-# for Solana install
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+# for Dotnet install
 export PATH="$HOME/.dotnet/tools:$PATH"
 
 # ZSH VI mode
@@ -152,27 +154,6 @@ else
   export VISUAL=vim
 fi
 
-#######################################################
-# Nvims
-#######################################################
-alias nvim-lazy="NVIM_APPNAME=LazyVim nvim"
-alias nvim-lunar="NVIM_APPNAME=LunarVim nvim"
-# alias nvim-kick="NVIM_APPNAME=kickstart nvim"
-# alias nvim-chad="NVIM_APPNAME=NvChad nvim"
-# alias nvim-astro="NVIM_APPNAME=AstroNvim nvim"
-
-function nvims() {
-  items=("default" "kickstart" "LazyVim" "NvChad" "AstroNvim" "LunarVim")
-  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
-  if [[ -z $config ]]; then
-    echo "Nothing selected"
-    return 0
-  elif [[ $config == "default" ]]; then
-    config=""
-  fi
-  NVIM_APPNAME=$config nvim $@
-}
-
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -182,7 +163,6 @@ function nvims() {
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias pn="pnpm"
 #
 zstyle ':completion:*:*:git:*' script /usr/local/share/zsh/site-functions/git-completion.bash
 
@@ -193,7 +173,10 @@ export NVM_DIR="$HOME/.nvm"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+export FZF_DEFAULT_OPTS='
+  --color fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
+  --color info:#83a598,prompt:#bdae93,spinner:#fabd2f,pointer:#83a598,marker:#fe8019,header:#665c54
+'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
