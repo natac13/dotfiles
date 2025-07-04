@@ -2,13 +2,13 @@
 .DS_Store
 
 # VSCode
-.vscode/
+# .vscode/
 
 # WebStorm
-.idea/
+# .idea/
 
 # npm
-npm-debug.log
+# npm-debug.log
 
 # yarn
 yarn-error.log
@@ -25,7 +25,7 @@ Session.vim
 .history
 
 # PayPal project specific stuff
-.nvmrc
+# .nvmrc
 .agignore
 
 # Over-arching stuff
@@ -33,7 +33,7 @@ Session.vim
 *.ignored.*
 
 # git
-*.patch
+#*.patch
 
 # eslint
 .eslintcache

@@ -102,7 +102,7 @@ plugins=(
   npm \
   nvm \
   rust \
-  tmux \
+  # tmux \
   # tldr \
   tools \
   vscode \
@@ -166,8 +166,8 @@ fi
 #
 zstyle ':completion:*:*:git:*' script /usr/local/share/zsh/site-functions/git-completion.bash
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 [ -s "/usr/local/etc/bash_completion.d/az" ] && . "/usr/local/etc/bash_completion.d/az"  # This loads azure-cli bash_completion
 
@@ -177,6 +177,11 @@ export FZF_DEFAULT_OPTS='
   --color fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
   --color info:#83a598,prompt:#bdae93,spinner:#fabd2f,pointer:#83a598,marker:#fe8019,header:#665c54
 '
+# Print tree structure in the preview window
+export FZF_ALT_C_OPTS="
+  --walker-skip .git,node_modules
+  --preview 'tree -C {}'"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -186,3 +191,48 @@ export FZF_DEFAULT_OPTS='
 #
 export PATH="/usr/local/opt/php@7.4/bin:$PATH"
 export PATH="/usr/local/opt/php@7.4/sbin:$PATH"
+
+# pnpm
+export PNPM_HOME="/Users/natac/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+###-begin-pnpm-completion-###
+if type compdef &>/dev/null; then
+  _pnpm_completion () {
+    local reply
+    local si=$IFS
+
+    IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" SHELL=zsh pnpm completion-server -- "${words[@]}"))
+    IFS=$si
+
+    if [ "$reply" = "__tabtab_complete_files__" ]; then
+      _files
+    else
+      _describe 'values' reply
+    fi
+  }
+  compdef _pnpm_completion pnpm
+fi
+###-end-pnpm-completion-###
+# pnpm end
+#
+autoload -Uz compinit && compinit -i
+
+## go
+# export GOPATH=$HOME/go
+# export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$(go env GOPATH)/bin
+
+## Ruby
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+## psql
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+eval "$(gh copilot alias -- zsh)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"

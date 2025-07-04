@@ -97,6 +97,8 @@ alias php8.1='{ brew unlink php@7.2; brew unlink php@7.3; brew unlink php@7.4; b
 alias nrd="npm run dev"
 alias pn="pnpm"
 
+# alias ncu="clear && ncu"
+
 #######################################################
 # Nvims
 #######################################################
