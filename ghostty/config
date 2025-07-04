@@ -1,0 +1,18 @@
+font-family = "Geist Nerd Font Mono"
+theme = "catppuccin-mocha"
+
+window-colorspace = "display-p3"
+window-padding-x = 4
+background-opacity = 0.9
+background-blur = true
+
+
+shell-integration = "zsh"
+
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+copy-on-select = true
+
+keybind = shift+enter=text:\n
